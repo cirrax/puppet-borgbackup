@@ -1,0 +1,34 @@
+
+# commands to run before backup creation:
+<% @pre_commands.each do | command | -%>
+<%= command -%>
+<% end -%>
+
+# Backup the most important directories into an archive named after
+# the machine this script is currently running on:
+
+borg create                         \
+<% if @create_filter != '' -%>
+    --filter <%= @create_filter %>                    \
+<% end -%>
+<% if @create_compression !='' -%>
+    --compression <%= @create_compression %>               \
+<% end -%>
+<% @create_options.each do | opt | -%>
+    --<%= opt -%>            \
+<% end -%>
+<% @create_excludes.each do | exclude | -%>
+    --exclude <%= exclude -%>            \
+<% end -%>
+                                    \
+    ::'{hostname}-<%= @archive_name %>-{now}' \
+<% @create_includes.each do | include | -%>
+    <%= include -%>            \
+<% end -%>
+
+backup_exit=$?
+
+# commands to run post backup creation:
+<% @post_commands.each do | command | -%>
+<%= command -%>
+<% end -%>
