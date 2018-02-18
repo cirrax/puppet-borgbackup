@@ -42,21 +42,30 @@ if [ "$CMD" = 'check' ]; then
   exit $?
 fi
 
-# to check the repo
+# to check the repo and output icinga/nagios result
+# as a second parameter you can give an archive name used as prefix
 if [ "$CMD" = 'check_icinga' ]; then
   borg check
   if [ $? -ne 0 ]; then
-    echo 'CRITICAL backup is inconsistent'
+    echo 'CRITICAL - backup is inconsistent'
     exit 2
   fi
   # check age:
-  last=`borg list |sort |tail -1|sed 's/^.*,//'`
+  if [ "$2" = '' ]; then
+    last=`borg list |sort |tail -1|sed 's/^.*,//'`
+  else
+    last=`borg list --prefix "{hostname}-$2"|sort |tail -1|sed 's/^.*,//'`
+  fi
+  if [ "$last" = '' ]; then
+    echo "WARNING - no backup yet"
+    exit 1
+  fi
   age=`echo $(date +%s),$(date -d"$last" +%s)|awk -F',' '{print ($1 -$2)}'`
-  if [ $age -gt <%= @icinga_old %> ]; then
-    echo "WARNING backup is old ($last) but consistent"
+  if [ $age -gt 90000 ]; then
+    echo "WARNING - backup is old ($last) but consistent"
     exit 1
   else
-    echo "OK backup is recent ($last) and consistent"
+    echo "OK - backup is recent ($last) and consistent"
     exit 0
   fi
 fi
