@@ -40,6 +40,15 @@ describe 'borgbackup::git' do
     }
     it { is_expected.to contain_package( 'gnupg' ) }
     it { is_expected.to contain_package( 'git' ) }
+
+    it { is_expected.to contain_file( params[:git_home] + '/' + facts[:fqdn])
+      .with_ensure(  'directory' )
+      .with_owner( 'root' )
+      .with_group( 'root' )
+      .with_mode( '0755' )
+      .with_require( 'Exec[setup git repo]' )
+    }
+
   end
 
   context 'with defaults' do

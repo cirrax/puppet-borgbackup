@@ -124,6 +124,14 @@ class borgbackup::git (
     }
   }
 
+  file { "${git_home}/${::fqdn}":
+    ensure  => 'directory',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+    require => Exec['setup git repo'],
+  }
+
   exec { 'commit git repo':
     environment => [ "GIT_SSH_COMMAND=ssh -i ${borgbackup::configdir}/.ssh/gitrepo_key" ],
     path        => '/usr/bin:/usr/sbin:/bin',

@@ -36,7 +36,7 @@ define borgbackup::addtogit (
     # just create the file if it does non exist, or we cannot decrypt it
     exec { "create passphrase file ${title}":
       command => "cat /dev/random |tr -dc _A-Z-a-z-0-9 | head -c30 | gpg --encrypt --always-trust ${keys} > ${git_home}/${::fqdn}/${reponame}_pass.gpg",
-      require => Exec['setup git repo', "create gpg private key for ${::fqdn}"],
+      require => [Exec["create gpg private key for ${::fqdn}"], File["${git_home}/${::fqdn}"]],
       before  => Exec["initialize borg repo ${reponame}"],
       unless  => [
         # we cannot decrypt the file (so it's probably the same host, newly setup, or file does not exist
@@ -49,7 +49,7 @@ define borgbackup::addtogit (
 
     exec { "create passphrase file ${title}":
       command => "echo ${passphrase} | gpg --encrypt --always-trust ${keys} > ${git_home}/${::fqdn}/${reponame}_pass.gpg",
-      require => Exec['setup git repo', "create gpg private key for ${::fqdn}"],
+      require => [Exec["create gpg private key for ${::fqdn}"], File["${git_home}/${::fqdn}"]],
       before  => Exec["initialize borg repo ${reponame}"],
       unless  => [
         # check if file contains passphrase
@@ -74,7 +74,7 @@ define borgbackup::addtogit (
 
   exec { "create key file ${title}":
     command  => "${configdir}/repo_${reponame}.sh exportkey | gpg --encrypt --always-trust ${keys} > ${git_home}/${::fqdn}/${reponame}_keyfile.gpg",
-    require  => Exec['setup git repo', "initialize borg repo ${reponame}", "create gpg private key for ${::fqdn}"],
+    require  => [Exec["initialize borg repo ${reponame}", "create gpg private key for ${::fqdn}"], File["${git_home}/${::fqdn}"]],
     provider => 'shell',
     unless   => [
       # check if file contains key
@@ -84,7 +84,7 @@ define borgbackup::addtogit (
 
   exec { "reencrypt key file ${title}":
     command => "gpg --decrypt ${git_home}/${::fqdn}/${reponame}_keyfile.gpg | gpg --encrypt --always-trust ${keys} > ${git_home}/${::fqdn}/${reponame}_keyfile.gpg",
-    require => Exec['setup git repo', "initialize borg repo ${reponame}", "create gpg private key for ${::fqdn}","create key file ${title}"],
+    require => [Exec["initialize borg repo ${reponame}", "create gpg private key for ${::fqdn}","create key file ${title}"], File["${git_home}/${::fqdn}"]],
     unless  => [
       # check if file is encrypted with correct keys 
       "gpg --decrypt -v --output /dev/null ${git_home}/${::fqdn}/${reponame}_pass.gpg 2>&1 |sed -n 's/^ .*<\\(.*\\)>\"$/\\L\\1/p'|sort|md5sum|grep -e '^${md5_keys}'",
