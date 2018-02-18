@@ -40,7 +40,10 @@ class borgbackup::git (
   $git_home       = "${borgbackup::configdir}/git",
 ) inherits borgbackup {
 
-  ensure_packages($packages)
+  Package<| tag =='borgbackup_git_package'  |> -> Exec["create gpg private key for ${::fqdn}"]
+  Package<| tag =='borgbackup_git_package'  |> -> Exec['setup git repo']
+
+  ensure_packages($packages, {'ensure' => 'present', tag => 'borgbackup_git_package' })
 
   ##################
   #
