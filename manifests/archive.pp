@@ -99,7 +99,7 @@ define borgbackup::archive (
   if $do_prune {
     concat::fragment{ "borgbackup::archive ${reponame} prune ${archive_name}":
       target  => "${configdir}/repo_${reponame}.sh",
-      content => template('borgbackup/repo_footer.erb'),
+      content => template('borgbackup/archive_prune.erb'),
       order   => "70-${title}",
     }
   }
