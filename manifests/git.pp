@@ -12,6 +12,9 @@
 #    the key for a pgp key must match the first email mentioned in
 #    the key. otherwise it will reencrypt with each puppet run!
 #    defaults to {}
+#  $gpg_home
+#    gpg directory to store pgp keys.
+#    defaults to "${borgbackup::configdir}/.gnupg"
 #  $gitrepo
 #    if set to a remote url, an existing git repo will be cloned and
 #    commits will be pushed there. This gives the oportunity to have
@@ -27,9 +30,9 @@
 #    directory to clone or create the git repo for
 #    keys and passphrases.
 #    defaults to "${borgbackup::configdir}/git"
-#  $gpg_home
-#    gpg directory to store pgp keys.
-#    defaults to "${borgbackup::configdir}/.gnupg"
+#  $git_author
+#    String to be used as git author for commits.
+#    defaults to 'borgbackup <root@${::fqdn}>'
 # 
 class borgbackup::git (
   $packages       = ['git','gnupg'],
@@ -38,6 +41,7 @@ class borgbackup::git (
   $gitrepo        = '',
   $gitrepo_sshkey = '',
   $git_home       = "${borgbackup::configdir}/git",
+  $git_author     = 'borgbackup <root@${::fqdn}>',
 ) inherits borgbackup {
 
   Package<| tag =='borgbackup_git_package'  |> -> Exec["create gpg private key for ${::fqdn}"]
@@ -136,7 +140,7 @@ class borgbackup::git (
     environment => [ "GIT_SSH_COMMAND=ssh -i ${borgbackup::configdir}/.ssh/gitrepo_key" ],
     path        => '/usr/bin:/usr/sbin:/bin',
     cwd         => $git_home,
-    command     => "git add .;git commit --message 'autocommit on ${::fqdn}' --author='root@${::fqdn}'",
+    command     => "git add .;git commit --message 'autocommit on ${::fqdn}' --author='${git_author}'",
     refreshonly => true,
     require     => Exec['setup git repo'],
   }
