@@ -59,6 +59,15 @@
 #       hour    => fqdn_rand(3,'borgbackup'),
 #       minute  => fqdn_rand(60,'borgbackup'),
 #     }
+#   $check_host
+#     if set to an ip address or a hostname, then a function
+#     checks if this host is reachable by opening a socket to
+#     port 22 (ssh). If this fails, the sope of this define
+#     is set to noop.
+#     Set checkhost equal to your remote backuphost to avoid
+#     a fail of your regular puppetruns if the backuphost is
+#     not reachable.
+#     defaults to '' means do not check.
 #
 define borgbackup::repo (
   $reponame       = $title,
@@ -73,9 +82,16 @@ define borgbackup::repo (
   $icinga_old     = 90000,  # 25 hours 
   $crontab_define = 'cron',
   $crontabs       = {},
+  $check_host    = '',
 ){
 
   include ::borgbackup
+
+  if $check_host != '' {
+    # this function tries to open a tcp socket on port 22 (ssh) of server
+    # if this fails, it sets the scoop to noop.
+    borgbackup_noop_connection($check_host)
+  }
 
   $configdir = $::borgbackup::configdir
 
@@ -109,7 +125,6 @@ define borgbackup::repo (
       $_passcommand = $passcommand
     }
   }
-
 
   exec{"initialize borg repo ${reponame}":
     command => "${configdir}/repo_${reponame}.sh init",
