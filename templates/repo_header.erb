@@ -5,6 +5,18 @@ CMD=$1
 # Setting this, so the repo does not need to be given on the commandline:
 export BORG_REPO=<%= @target %>
 
+# get the backup host, if there is none we expect ''
+BACKUP_HOST=`echo $BORG_REPO|sed -e 's/^.*\@\(.*\)\:.*$/\1/;tx;d;:x'`
+
+# check if backup host is reachable, if not return an icinga/nagios compatible warning (exit 1)
+if [ "$BACKUP_HOST" != '' ]; then
+  ssh  -o PasswordAuthentication=no -o PubkeyAuthentication=no -o ConnectTimeout=3  $BACKUPHOST  2>&1 |grep 'Permission denied'
+  if [ $? -ne 0 ]; then
+    echo "WARNING - backup host ($BACKUP_HOST) not reachable"
+    exit 1
+  fi
+fi
+
 <% if @_passphrase != '' -%>
 # Setting this, so you won't be asked for your repository passphrase:
 export BORG_PASSPHRASE='<%= @_passphrase %>'
