@@ -10,7 +10,7 @@ BACKUP_HOST=`echo $BORG_REPO|sed -e 's/^.*\@\(.*\)\:.*$/\1/;tx;d;:x'`
 
 # check if backup host is reachable, if not return an icinga/nagios compatible warning (exit 1)
 if [ "$BACKUP_HOST" != '' ]; then
-  ssh  -o PasswordAuthentication=no -o PubkeyAuthentication=no -o ConnectTimeout=3  $BACKUPHOST  2>&1 |grep 'Permission denied'
+  ssh  -o PasswordAuthentication=no -o PubkeyAuthentication=no -o ConnectTimeout=5  $BACKUP_HOST  2>&1 |grep 'Permission denied'
   if [ $? -ne 0 ]; then
     echo "WARNING - backup host ($BACKUP_HOST) not reachable"
     exit 1
