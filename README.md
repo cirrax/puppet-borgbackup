@@ -5,12 +5,14 @@
 [![Puppet Forge](https://img.shields.io/puppetforge/dt/cirrax/borgbackup.svg?style=flat-square)](https://forge.puppet.com/cirrax/borgbackup)
 [![Puppet Forge](https://img.shields.io/puppetforge/e/cirrax/borgbackup.svg?style=flat-square)](https://forge.puppet.com/cirrax/borgbackup)
 [![Puppet Forge](https://img.shields.io/puppetforge/f/cirrax/borgbackup.svg?style=flat-square)](https://forge.puppet.com/cirrax/borgbackup)
+[![puppetmodule.info docs](http://www.puppetmodule.info/images/badge.png)](http://www.puppetmodule.info/github/cirrax/puppet-borgbackup)
+
 
 #### Table of Contents
 
 1. [Overview](#overview)
-1. [Usage - Configuration options and additional functionality](#usage)
-1. [Documentations ](#documentation)
+1. [Usage](#usage)
+1. [Reference](#reference)
 1. [Contributing](#contributing)
 
 
@@ -98,9 +100,22 @@ Add the following hiera configuration to node-A to fetch and commit to remote gi
 *Remark:* ID-of-user should point to the main email of the pgp key. If you see runing reencrypt with each puppet run on
 the nodes, then the ID-of-user is probably wrong.
 
-## Documentation
+## Reference
 
 All classes and defines are documented with all parameters in the corresponding code file.
+
+### classes
+* [::borgbackup](http://www.puppetmodule.info/github/cirrax/puppet-borgbackup/master/puppet_classes/borgbackup)
+* [::borgbackup::git](http://www.puppetmodule.info/github/cirrax/puppet-borgbackup/master/puppet_classes/borgbackup_3A_3Agit)
+* [::borgbackup::install](http://www.puppetmodule.info/github/cirrax/puppet-borgbackup/master/puppet_classes/borgbackup_3A_3Ainstall)
+* [::borgbackup::server](http://www.puppetmodule.info/github/cirrax/puppet-borgbackup/master/puppet_classes/borgbackup_3A_3Aserver)
+
+
+### defined typed
+* [::borgbackup::addtogit](http://www.puppetmodule.info/github/cirrax/puppet-borgbackup/master/puppet_defined_types/borgbackup_3A_3Aaddtogit)
+* [::borgbackup::archive](http://www.puppetmodule.info/github/cirrax/puppet-borgbackup/master/puppet_defined_types/borgbackup_3A_3Aarchive)
+* [::borgbackup::authorized_key](http://www.puppetmodule.info/github/cirrax/puppet-borgbackup/master/puppet_defined_types/borgbackup_3A_3Aauthorized_key)
+* [::borgbackup::repo](http://www.puppetmodule.info/github/cirrax/puppet-borgbackup/master/puppet_defined_types/borgbackup_3A_3Arepo)
 
 ## Contributing
 
