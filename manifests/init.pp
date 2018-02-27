@@ -27,13 +27,13 @@
 #    defaults to {}
 #
 class borgbackup (
-  $configdir            = '/etc/borgbackup',
-  $ensure_ssh_directory = true,
-  $ssh_key_define       = '',
-  $ssh_key_res          = {},
-  $repos                = {$::fqdn => {}},
-  $default_target       = '',
-  $repos_defaults       = {},
+  String  $configdir            = '/etc/borgbackup',
+  Boolean $ensure_ssh_directory = true,
+  String  $ssh_key_define       = '',
+  Hash    $ssh_key_res          = {},
+  Hash    $repos                = {$::fqdn => {}},
+  String  $default_target       = '',
+  Hash    $repos_defaults       = {},
 ) {
 
   include ::borgbackup::install

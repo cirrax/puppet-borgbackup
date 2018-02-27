@@ -29,15 +29,15 @@
 #    defaults to {}
 #
 class borgbackup::server(
-  $backuproot               = '/srv/borgbackup',
-  $borguser                  = 'borgbackup',
-  $borggroup                = 'borgbackup',
-  $borghome                 = '/var/lib/borgbackup',
-  $user_ensure              = true,
-  $authorized_keys_target   = '/var/lib/borgbackup/authorized-keys',
-  $authorized_keys_define   = 'borgbackup::authorized_key',
-  $authorized_keys          = {},
-  $authorized_keys_defaults = {},
+  String  $backuproot               = '/srv/borgbackup',
+  String  $borguser                  = 'borgbackup',
+  String  $borggroup                = 'borgbackup',
+  String  $borghome                 = '/var/lib/borgbackup',
+  Boolean $user_ensure              = true,
+  String  $authorized_keys_target   = '/var/lib/borgbackup/authorized-keys',
+  String  $authorized_keys_define   = 'borgbackup::authorized_key',
+  Hash    $authorized_keys          = {},
+  Hash    $authorized_keys_defaults = {},
 ){
 
   if $user_ensure {

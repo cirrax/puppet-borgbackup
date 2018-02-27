@@ -35,13 +35,13 @@
 #    defaults to 'borgbackup <root@${::fqdn}>'
 # 
 class borgbackup::git (
-  $packages       = ['git','gnupg'],
-  $gpg_keys       = {},
-  $gpg_home       = "${borgbackup::configdir}/.gnupg",
-  $gitrepo        = '',
-  $gitrepo_sshkey = '',
-  $git_home       = "${borgbackup::configdir}/git",
-  $git_author     = 'borgbackup <root@${::fqdn}>',
+  Array  $packages       = ['git','gnupg'],
+  Hash   $gpg_keys       = {},
+  String $gpg_home       = "${borgbackup::configdir}/.gnupg",
+  String $gitrepo        = '',
+  String $gitrepo_sshkey = '',
+  String $git_home       = "${borgbackup::configdir}/git",
+  String $git_author     = 'borgbackup <root@${::fqdn}>',
 ) inherits borgbackup {
 
   Package<| tag =='borgbackup_git_package'  |> -> Exec["create gpg private key for ${::fqdn}"]

@@ -70,19 +70,19 @@
 #     defaults to '' means do not check.
 #
 define borgbackup::repo (
-  $reponame       = $title,
-  $target         = '',
-  $passphrase     = '',
-  $passcommand    = 'default',
-  $env_vars       = {},
-  $archives       = {},
-  $encryption     = 'keyfile',
-  $append_only    = false,
-  $storage_quota  = '',
-  $icinga_old     = 90000,  # 25 hours 
-  $crontab_define = 'cron',
-  $crontabs       = {},
-  $check_host    = '',
+  String  $reponame       = $title,
+  String  $target         = '',
+  String  $passphrase     = '',
+  String  $passcommand    = 'default',
+  Hash    $env_vars       = {},
+  Hash    $archives       = {},
+  String  $encryption     = 'keyfile',
+  Boolean $append_only    = false,
+  String  $storage_quota  = '',
+  Integer $icinga_old     = 90000,  # 25 hours 
+  String  $crontab_define = 'cron',
+  Hash    $crontabs       = {},
+  String  $check_host     = '',
 ){
 
   include ::borgbackup

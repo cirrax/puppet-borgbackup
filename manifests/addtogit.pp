@@ -7,8 +7,8 @@
 #  $reponame:
 #    the name of the repository
 define borgbackup::addtogit (
-  $passphrase,
-  $reponame,
+  String $passphrase,
+  String $reponame,
 ) {
 
   include ::borgbackup::git
