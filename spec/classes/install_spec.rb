@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'borgbackup::install' do
   let :default_params do
-      { :packages       => 'borgbackup',
+      { :packages       => ['borgbackup'],
         :package_ensure => 'installed',
       }
   end
@@ -13,11 +13,6 @@ describe 'borgbackup::install' do
 
     it { is_expected.to compile.with_all_deps }
 
-    it 'installs borgbackup' do
-      is_expected.to contain_package( params[:packages] )
-	.with_ensure( params[:package_ensure] )
-        .with_tag('borgbackup')
-    end
   end
 
   context 'with defaults' do
@@ -26,16 +21,28 @@ describe 'borgbackup::install' do
     end 
 
     it_behaves_like 'borgbackup::install shared examples'
+
+    it 'installs borgbackup' do
+      is_expected.to contain_package( 'borgbackup' )
+	.with_ensure( params[:package_ensure] )
+        .with_tag('borgbackup')
+    end
   end
 
   context 'with non  defaults' do
     let :params do
       default_params.merge( 
-	:packages       => 'backup-whatever',
+	:packages       => ['backup-whatever'],
         :package_ensure => 'actual',
       )
     end
     it_behaves_like 'borgbackup::install shared examples'
+
+    it 'installs borgbackup' do
+      is_expected.to contain_package( 'backup-whatever' )
+	.with_ensure( params[:package_ensure] )
+        .with_tag('borgbackup')
+    end
   end
 
 end
