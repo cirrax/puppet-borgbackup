@@ -1,7 +1,7 @@
 
 # commands to run before backup creation:
 <% @pre_commands.each do | command | -%>
-<%= command -%>
+<%= command %>
 <% end -%>
 
 # Backup the most important directories into an archive named after
@@ -30,5 +30,5 @@ backup_exit=$?
 
 # commands to run post backup creation:
 <% @post_commands.each do | command | -%>
-<%= command -%>
+<%= command %>
 <% end -%>
