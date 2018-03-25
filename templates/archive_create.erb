@@ -6,7 +6,9 @@
 
 # Backup the most important directories into an archive named after
 # the machine this script is currently running on:
-
+<% if @stdin_cmd != '' -%>
+<%= @stdin_cmd %> | \
+<% end -%>
 borg create                         \
 <% if @create_filter != '' -%>
     --filter <%= @create_filter %>                    \
@@ -24,6 +26,9 @@ borg create                         \
     ::'{hostname}-<%= @archive_name %>-{now}' \
 <% @create_includes.each do | include | -%>
     <%= include -%>            \
+<% end -%>
+<% if @stdin_cmd != '' -%>
+-
 <% end -%>
 
 backup_exit=$?

@@ -12,6 +12,7 @@ describe 'borgbackup::archive' do
 	:create_options     => ['verbose', 'list', 'stats', 'show-rc', 'exclude-caches'],
 	:create_excludes    => [],
 	:create_includes    => [],
+        :stdin_cmd          => '',
 	:do_prune           => true,
 	:prune_options      => ['list', 'show-rc'],
 	:keep_last          => '',

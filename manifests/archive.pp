@@ -31,9 +31,15 @@
 # $create_excludes
 #   Array of excludes
 #   Defaults to []
+#   needs to be [] if stdin_cmd is used.
 # $create_includes
 #   Array of file to include
 #   Defaults to []
+#   needs to be [] if stdin_cmd is used.
+# $stdin_cmd
+#   command which is executed, stdout is used as
+#   input to backup. defaults to ''
+#   do not use together with $create_excludes and $create_includes
 # $do_prune
 #   if true, prune will be run after the create command.
 #   Defaults to true
@@ -76,6 +82,7 @@ define borgbackup::archive (
   Array                    $create_options     = ['verbose', 'list', 'stats', 'show-rc', 'exclude-caches'],
   Array                    $create_excludes    = [],
   Array                    $create_includes    = [],
+  String                   $stdin_cmd          = '',
   Boolean                  $do_prune           = true,
   Array                    $prune_options      = ['list', 'show-rc'],
   Variant[String, Integer] $keep_last          = '',
@@ -85,6 +92,10 @@ define borgbackup::archive (
   Variant[String, Integer] $keep_monthly       = 6,
   Variant[String, Integer] $keep_yearly        = '',
 ){
+
+  if ($stdin_cmd != '' and $create_includes != []) or ($stdin_cmd != '' and $create_excludes != []) {
+    fail('borgbackup::archive $stdin_cmd cannot be used together with $create_includes or $create_exclude')
+  }
 
   include ::borgbackup
 
