@@ -18,6 +18,7 @@
 #    parameters.
 #    defautls to {$::fqdn => {}} which creates an
 #    empty repo named $::fqdn.
+#    Hint: hiera5 will hash merge this parameter.
 #  $default_target
 #    the default target of the backup for $repos definition
 #    defaults to ''
