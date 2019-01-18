@@ -38,8 +38,8 @@ export <%= key %>='<%= val %>'
 # to initialize the repo
 if [ "$CMD" = 'init' ]; then
     borg init \
-<% if @apend_only -%> 
-         --append-only \ 
+<% if @apend_only -%>
+         --append-only \
 <% end -%>
 <% if @storage_quota != '' -%>
          --storage-quota <%= @storage_quota %> \
@@ -51,6 +51,12 @@ fi
 # to check the repo
 if [ "$CMD" = 'check' ]; then
   borg check -v --info
+  exit $?
+fi
+
+# to list the repo
+if [ "$CMD" = 'list' ]; then
+  borg list
   exit $?
 fi
 
@@ -98,4 +104,3 @@ info() { printf "\n%s %s\n\n" "$( date )" "$*" >&2; }
 trap 'echo $( date ) Backup interrupted >&2; exit 2' INT TERM
 
 info "Starting backup"
-
