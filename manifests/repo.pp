@@ -128,7 +128,7 @@ define borgbackup::repo (
 
   exec{"initialize borg repo ${reponame}":
     command => "${configdir}/repo_${reponame}.sh init",
-    unless  => "${configdir}/repo_${reponame}.sh check",
+    unless  => "${configdir}/repo_${reponame}.sh list",
     require => Concat["${configdir}/repo_${reponame}.sh"],
   }
 
