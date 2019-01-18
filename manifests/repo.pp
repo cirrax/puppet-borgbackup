@@ -1,15 +1,15 @@
 #
 # This class initializes a backup run
-# 
+#
 # use borgbackup::archive define to add archives to
 # this repo
 #
 # Parameters:
 #   $reponame
-#     the name of the repo 
+#     the name of the repo
 #     Defaults to $title
 #   $target
-#     the target where to put the backup (env BROG_REPO)
+#     the target where to put the backup (env BORG_REPO)
 #   $passphrase
 #     the passphrase to use for the repo
 #     if empty (the default, random pasphrase is generated
@@ -17,10 +17,10 @@
 #     borgbackup::git for more information.
 #   $passcommand
 #     a command to get the password of the repo
-#     defaults to 'default' which creates a 
+#     defaults to 'default' which creates a
 #     passcommand to extract the key from the gitrepo.
 #   $env_vars
-#     additional environment variables to set 
+#     additional environment variables to set
 #     before the execution of borg.
 #     defaults to {}
 #     for remote repositories, set this to:
@@ -79,7 +79,7 @@ define borgbackup::repo (
   String  $encryption     = 'keyfile',
   Boolean $append_only    = false,
   String  $storage_quota  = '',
-  Integer $icinga_old     = 90000,  # 25 hours 
+  Integer $icinga_old     = 90000,  # 25 hours
   String  $crontab_define = 'cron',
   Hash    $crontabs       = {},
   String  $check_host     = '',
@@ -100,7 +100,7 @@ define borgbackup::repo (
 
     $_passcommand = "export GNUPGHOME='${::borgbackup::git::gpg_home}'; gpg --decrypt ${::borgbackup::git::git_home}/${::fqdn}/${reponame}_pass.gpg"
     if $passphrase == '' {
-      # default behaviour, save a random passphrase encrypted in git repo 
+      # default behaviour, save a random passphrase encrypted in git repo
       $_passphrase = ''
       $_passphrase_to_git = 'random'
     } else {
