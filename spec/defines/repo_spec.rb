@@ -1,19 +1,17 @@
-
-
 require 'spec_helper'
 
 describe 'borgbackup::repo' do
   let :default_params do
       { :reponame       => 'title',
-	:target         => '',
-  	:passphrase     => '',
-	:passcommand    => 'default',
-	:env_vars       => {},
-	:archives       => {},
-	:encryption     => 'keyfile',
-	:append_only    => false,
-	:storage_quota  => '',
-	:icinga_old     => 90000,
+        :target         => '',
+        :passphrase     => '',
+        :passcommand    => 'default',
+        :env_vars       => {},
+        :archives       => {},
+        :encryption     => 'keyfile',
+        :append_only    => false,
+        :storage_quota  => '',
+        :icinga_old     => 90000,
         :crontab_define => 'cron',
         :crontabs       => {},
       }
@@ -43,14 +41,14 @@ describe 'borgbackup::repo' do
 
     it { is_expected.to contain_exec('initialize borg repo ' + params[:reponame])
       .with_command( '/etc/borgbackup/repo_' + params[:reponame] + '.sh init')
-      .with_unless(  '/etc/borgbackup/repo_' + params[:reponame] + '.sh check')
+      .with_unless(  '/etc/borgbackup/repo_' + params[:reponame] + '.sh list')
     }
   end
 
   context 'with defaults' do
     let (:title) { 'mytitle' }
     let :params do
-      default_params.merge( 
+      default_params.merge(
         :reponame => title,
       )
     end
@@ -66,9 +64,9 @@ describe 'borgbackup::repo' do
   context 'with archives' do
     let (:title) { 'mytitle' }
     let :params do
-      default_params.merge( 
+      default_params.merge(
         :reponame => title,
-	:archives => { 'arch' => {} },
+        :archives => { 'arch' => {} },
       )
     end
 
@@ -82,9 +80,9 @@ describe 'borgbackup::repo' do
   context 'with no cronjob' do
     let (:title) { 'no_cron' }
     let :params do
-      default_params.merge( 
+      default_params.merge(
         :reponame       => title,
- 	:crontab_define => '',
+        :crontab_define => '',
       )
     end
 
@@ -95,9 +93,14 @@ describe 'borgbackup::repo' do
   context 'with custom cronjob' do
     let (:title) { 'my_cron' }
     let :params do
-      default_params.merge( 
+      default_params.merge(
         :reponame => title,
-	:crontabs => { 'mycustomcron' => {'command' => '/bin/true', 'user' => 'someuser', 'hour' => 12, 'minute' => 42 }},
+        :crontabs => { 'mycustomcron' => {
+                         'command' => '/bin/true',
+                         'user'    => 'someuser',
+                         'hour'    => 12,
+                         'minute'  => 42,
+                       }},
       )
     end
 
