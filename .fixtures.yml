@@ -5,5 +5,7 @@ fixtures:
                  repo:  "https://github.com/puppetlabs/puppetlabs-concat.git"
           "stdlib":
                  repo: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
+          "cron_core":
+                 repo: 'https://github.com/puppetlabs/puppetlabs-cron_core'
   symlinks:
           "borgbackup": "#{source_dir}"
