@@ -23,7 +23,7 @@ borg create                         \
     --exclude <%= exclude -%>            \
 <% end -%>
                                     \
-    ::'{hostname}-<%= @archive_name %>-{now}' \
+    ::'{hostname}-<%= @archive_name %>_{now:%Y-%m-%d_%H-%M}' \
 <% @create_includes.each do | include | -%>
     <%= include -%>            \
 <% end -%>
