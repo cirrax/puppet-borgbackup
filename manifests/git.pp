@@ -44,10 +44,10 @@ class borgbackup::git (
   String $git_author     = 'borgbackup <root@${::fqdn}>',
 ) inherits borgbackup {
 
-  Package<| tag =='borgbackup_git_package'  |> -> Exec["create gpg private key for ${::fqdn}"]
-  Package<| tag =='borgbackup_git_package'  |> -> Exec['setup git repo']
+  Package[$packages] -> Exec["create gpg private key for ${::fqdn}"]
+  Package[$packages] -> Exec['setup git repo']
 
-  ensure_packages($packages, {'ensure' => 'present', tag => 'borgbackup_git_package' })
+  ensure_packages($packages)
 
   ##################
   #
