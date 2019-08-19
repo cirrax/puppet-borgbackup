@@ -75,10 +75,10 @@ if [ "$CMD" = 'check_icinga' ]; then
   fi
   age=`echo $(date +%s),$(date -d"$last" +%s)|awk -F',' '{print ($1 -$2)}'`
   if [ $age -gt 90000 ]; then
-    echo "WARNING - backup is old ($last) but consistent"
+    echo "WARNING - backup is old ($last)"
     exit 1
   else
-    echo "OK - backup is recent ($last) and consistent"
+    echo "OK - backup is recent ($last)"
     exit 0
   fi
 fi
