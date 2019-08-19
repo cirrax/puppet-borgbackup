@@ -35,36 +35,42 @@ describe 'borgbackup::archive' do
     }
   end
 
-  context 'with defaults' do
-    let(:title) { 'mytitle' }
-    let :params do
-      default_params.merge(
-        archive_name: title,
-        reponame: 'myrepo',
-      )
+  on_supported_os.each do |os, os_facts|
+    context "on #{os}" do
+      let(:facts) { os_facts }
+
+      context 'with defaults' do
+        let(:title) { 'mytitle' }
+        let :params do
+          default_params.merge(
+            archive_name: title,
+            reponame: 'myrepo',
+          )
+        end
+
+        it_behaves_like 'borgbackup::archive shared examples'
+
+        it {
+          is_expected.to contain_concat__fragment('borgbackup::archive ' + params[:reponame] + ' prune ' + params[:archive_name])
+            .with_target('/etc/borgbackup/repo_' + params[:reponame] + '.sh')
+            .with_order('70-' + title)
+        }
+      end
+
+      context 'without prune' do
+        let(:title) { 'mytitle' }
+        let :params do
+          default_params.merge(
+            archive_name: title,
+            reponame: 'anotherrepo',
+            do_prune: false,
+          )
+        end
+
+        it_behaves_like 'borgbackup::archive shared examples'
+
+        it { is_expected.not_to contain_concat__fragment('borgbackup::archive ' + params[:reponame] + ' prune ' + params[:archive_name]) }
+      end
     end
-
-    it_behaves_like 'borgbackup::archive shared examples'
-
-    it {
-      is_expected.to contain_concat__fragment('borgbackup::archive ' + params[:reponame] + ' prune ' + params[:archive_name])
-        .with_target('/etc/borgbackup/repo_' + params[:reponame] + '.sh')
-        .with_order('70-' + title)
-    }
-  end
-
-  context 'without prune' do
-    let(:title) { 'mytitle' }
-    let :params do
-      default_params.merge(
-        archive_name: title,
-        reponame: 'anotherrepo',
-        do_prune: false,
-      )
-    end
-
-    it_behaves_like 'borgbackup::archive shared examples'
-
-    it { is_expected.not_to contain_concat__fragment('borgbackup::archive ' + params[:reponame] + ' prune ' + params[:archive_name]) }
   end
 end

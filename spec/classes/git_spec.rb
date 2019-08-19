@@ -3,10 +3,7 @@
 require 'spec_helper'
 
 describe 'borgbackup::git' do
-  let(:facts) do
-    { fqdn: 'myhost.somewhere.ch' }
-  end
-
+  let(:node) { 'myhost.somewhere.com' }
   let :default_params do
     { packages: ['git', 'gnupg'],
       gpg_keys: {},
@@ -28,8 +25,8 @@ describe 'borgbackup::git' do
     }
 
     it {
-      is_expected.to contain_exec('create gpg private key for myhost.somewhere.ch')
-        .with_command("gpg --quick-generate-key --batch --passphrase '' 'borg myhost.somewhere.ch'")
+      is_expected.to contain_exec('create gpg private key for myhost.somewhere.com')
+        .with_command("gpg --quick-generate-key --batch --passphrase '' 'borg myhost.somewhere.com'")
     }
 
     it {
@@ -45,7 +42,7 @@ describe 'borgbackup::git' do
     it { is_expected.to contain_package('git') }
 
     it {
-      is_expected.to contain_file(params[:git_home] + '/' + facts[:fqdn])
+      is_expected.to contain_file(params[:git_home] + '/myhost.somewhere.com')
         .with_ensure('directory')
         .with_owner('root')
         .with_group('root')
@@ -54,45 +51,51 @@ describe 'borgbackup::git' do
     }
   end
 
-  context 'with defaults' do
-    let :params do
-      default_params
+  on_supported_os.each do |os, os_facts|
+    context "on #{os}" do
+      let(:facts) { os_facts }
+
+      context 'with defaults' do
+        let :params do
+          default_params
+        end
+
+        it_behaves_like 'borgbackup::git shared examples'
+        it {
+          is_expected.to contain_exec('setup git repo')
+            .with_command(%r{^git init })
+        }
+      end
+      context 'with remote git repo' do
+        let :params do
+          default_params.merge(
+            gitrepo: 'somewhere/gitrepo',
+          )
+        end
+
+        it_behaves_like 'borgbackup::git shared examples'
+
+        it {
+          is_expected.to contain_exec('setup git repo')
+            .with_command(%r{^git clone })
+        }
+
+        it {
+          is_expected.to contain_file('/etc/borgbackup/.ssh/gitrepo_key')
+            .with_owner('root')
+            .with_group('root')
+            .with_mode('0700')
+        }
+
+        it {
+          is_expected.to contain_exec('pull git repo')
+            .with_cwd(params[:git_home])
+        }
+        it {
+          is_expected.to contain_exec('push git repo')
+            .with_cwd(params[:git_home])
+        }
+      end
     end
-
-    it_behaves_like 'borgbackup::git shared examples'
-    it {
-      is_expected.to contain_exec('setup git repo')
-        .with_command(%r{^git init })
-    }
-  end
-  context 'with remote git repo' do
-    let :params do
-      default_params.merge(
-        gitrepo: 'somewhere/gitrepo',
-      )
-    end
-
-    it_behaves_like 'borgbackup::git shared examples'
-
-    it {
-      is_expected.to contain_exec('setup git repo')
-        .with_command(%r{^git clone })
-    }
-
-    it {
-      is_expected.to contain_file('/etc/borgbackup/.ssh/gitrepo_key')
-        .with_owner('root')
-        .with_group('root')
-        .with_mode('0700')
-    }
-
-    it {
-      is_expected.to contain_exec('pull git repo')
-        .with_cwd(params[:git_home])
-    }
-    it {
-      is_expected.to contain_exec('push git repo')
-        .with_cwd(params[:git_home])
-    }
   end
 end

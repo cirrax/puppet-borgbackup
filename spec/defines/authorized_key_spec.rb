@@ -24,34 +24,40 @@ describe 'borgbackup::authorized_key' do
     }
   end
 
-  context 'with defaults' do
-    let(:title) { 'mytitle' }
-    let :params do
-      default_params.merge(
-        reponame: title,
-        backuproot: 'mybackuproot',
-        target: 'mytarget',
-      )
+  on_supported_os.each do |os, os_facts|
+    context "on #{os}" do
+      let(:facts) { os_facts }
+
+      context 'with defaults' do
+        let(:title) { 'mytitle' }
+        let :params do
+          default_params.merge(
+            reponame: title,
+            backuproot: 'mybackuproot',
+            target: 'mytarget',
+          )
+        end
+
+        it_behaves_like 'borgbackup::authorized_key shared examples'
+      end
+
+      context 'with keys' do
+        let(:title) { 'mytitle' }
+        let :params do
+          default_params.merge(
+            reponame: title,
+            backuproot: 'mybackuproot',
+            target: 'mytarget',
+            keys: ['rsa mykey'],
+          )
+        end
+
+        it_behaves_like 'borgbackup::authorized_key shared examples'
+        it {
+          is_expected.to contain_concat__fragment(title)
+            .with_content(%r{rsa mykey})
+        }
+      end
     end
-
-    it_behaves_like 'borgbackup::authorized_key shared examples'
-  end
-
-  context 'with keys' do
-    let(:title) { 'mytitle' }
-    let :params do
-      default_params.merge(
-        reponame: title,
-        backuproot: 'mybackuproot',
-        target: 'mytarget',
-        keys: ['rsa mykey'],
-      )
-    end
-
-    it_behaves_like 'borgbackup::authorized_key shared examples'
-    it {
-      is_expected.to contain_concat__fragment(title)
-        .with_content(%r{rsa mykey})
-    }
   end
 end

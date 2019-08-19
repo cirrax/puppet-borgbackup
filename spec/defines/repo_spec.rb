@@ -47,75 +47,81 @@ describe 'borgbackup::repo' do
     }
   end
 
-  context 'with defaults' do
-    let(:title) { 'mytitle' }
-    let :params do
-      default_params.merge(
-        reponame: title,
-      )
+  on_supported_os.each do |os, os_facts|
+    context "on #{os}" do
+      let(:facts) { os_facts }
+
+      context 'with defaults' do
+        let(:title) { 'mytitle' }
+        let :params do
+          default_params.merge(
+            reponame: title,
+          )
+        end
+
+        it_behaves_like 'borgbackup::repo shared examples'
+
+        it {
+          is_expected.to contain_cron('borgbackup run mytitle')
+            .with_user('root')
+            .with_command('/etc/borgbackup/repo_mytitle.sh run')
+        }
+      end
+
+      context 'with archives' do
+        let(:title) { 'mytitle' }
+        let :params do
+          default_params.merge(
+            reponame: title,
+            archives: { 'arch' => {} },
+          )
+        end
+
+        it_behaves_like 'borgbackup::repo shared examples'
+
+        it {
+          is_expected.to contain_borgbackup__archive('arch')
+            .with_reponame('mytitle')
+        }
+      end
+
+      context 'with no cronjob' do
+        let(:title) { 'no_cron' }
+        let :params do
+          default_params.merge(
+            reponame: title,
+            crontab_define: '',
+          )
+        end
+
+        it_behaves_like 'borgbackup::repo shared examples'
+        it { is_expected.not_to contain_cron('borgbackup run no_cron') }
+      end
+
+      context 'with custom cronjob' do
+        let(:title) { 'my_cron' }
+        let :params do
+          default_params.merge(
+            reponame: title,
+            crontabs: { 'mycustomcron' => {
+              'command' => '/bin/true',
+              'user'    => 'someuser',
+              'hour'    => 12,
+              'minute'  => 42,
+            } },
+          )
+        end
+
+        it_behaves_like 'borgbackup::repo shared examples'
+        it { is_expected.not_to contain_cron('borgbackup run my_cron') }
+        it {
+          is_expected.to contain_cron('mycustomcron')
+            .with_command('/bin/true')
+            .with_user('someuser')
+            .with_hour(12)
+            .with_minute(42)
+        }
+      end
     end
-
-    it_behaves_like 'borgbackup::repo shared examples'
-
-    it {
-      is_expected.to contain_cron('borgbackup run mytitle')
-        .with_user('root')
-        .with_command('/etc/borgbackup/repo_mytitle.sh run')
-    }
-  end
-
-  context 'with archives' do
-    let(:title) { 'mytitle' }
-    let :params do
-      default_params.merge(
-        reponame: title,
-        archives: { 'arch' => {} },
-      )
-    end
-
-    it_behaves_like 'borgbackup::repo shared examples'
-
-    it {
-      is_expected.to contain_borgbackup__archive('arch')
-        .with_reponame('mytitle')
-    }
-  end
-
-  context 'with no cronjob' do
-    let(:title) { 'no_cron' }
-    let :params do
-      default_params.merge(
-        reponame: title,
-        crontab_define: '',
-      )
-    end
-
-    it_behaves_like 'borgbackup::repo shared examples'
-    it { is_expected.not_to contain_cron('borgbackup run no_cron') }
-  end
-
-  context 'with custom cronjob' do
-    let(:title) { 'my_cron' }
-    let :params do
-      default_params.merge(
-        reponame: title,
-        crontabs: { 'mycustomcron' => {
-          'command' => '/bin/true',
-          'user'    => 'someuser',
-          'hour'    => 12,
-          'minute'  => 42,
-        } },
-      )
-    end
-
-    it_behaves_like 'borgbackup::repo shared examples'
-    it { is_expected.not_to contain_cron('borgbackup run my_cron') }
-    it {
-      is_expected.to contain_cron('mycustomcron')
-        .with_command('/bin/true')
-        .with_user('someuser')
-        .with_hour(12)
-        .with_minute(42)
-    }
   end
 end

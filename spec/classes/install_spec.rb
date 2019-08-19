@@ -12,34 +12,40 @@ describe 'borgbackup::install' do
     it { is_expected.to compile.with_all_deps }
   end
 
-  context 'with defaults' do
-    let :params do
-      default_params
-    end
+  on_supported_os.each do |os, os_facts|
+    context "on #{os}" do
+      let(:facts) { os_facts }
 
-    it_behaves_like 'borgbackup::install shared examples'
+      context 'with defaults' do
+        let :params do
+          default_params
+        end
 
-    it 'installs borgbackup' do
-      is_expected.to contain_package('borgbackup')
-        .with_ensure(params[:package_ensure])
-        .with_tag('borgbackup')
-    end
-  end
+        it_behaves_like 'borgbackup::install shared examples'
 
-  context 'with non  defaults' do
-    let :params do
-      default_params.merge(
-        packages: ['backup-whatever'],
-        package_ensure: 'actual',
-      )
-    end
+        it 'installs borgbackup' do
+          is_expected.to contain_package('borgbackup')
+            .with_ensure(params[:package_ensure])
+            .with_tag('borgbackup')
+        end
+      end
 
-    it_behaves_like 'borgbackup::install shared examples'
+      context 'with non  defaults' do
+        let :params do
+          default_params.merge(
+            packages: ['backup-whatever'],
+            package_ensure: 'actual',
+          )
+        end
 
-    it 'installs borgbackup' do
-      is_expected.to contain_package('backup-whatever')
-        .with_ensure(params[:package_ensure])
-        .with_tag('borgbackup')
+        it_behaves_like 'borgbackup::install shared examples'
+
+        it 'installs borgbackup' do
+          is_expected.to contain_package('backup-whatever')
+            .with_ensure(params[:package_ensure])
+            .with_tag('borgbackup')
+        end
+      end
     end
   end
 end

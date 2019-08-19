@@ -35,27 +35,33 @@ describe 'borgbackup::addtogit' do
     }
   end
 
-  context 'with defaults' do
-    let(:title) { 'mytitle' }
-    let :params do
-      {
-        passphrase: 'random',
-        reponame: 'test',
-      }
+  on_supported_os.each do |os, os_facts|
+    context "on #{os}" do
+      let(:facts) { os_facts }
+
+      context 'with defaults' do
+        let(:title) { 'mytitle' }
+        let :params do
+          {
+            passphrase: 'random',
+            reponame: 'test',
+          }
+        end
+
+        it_behaves_like 'borgbackup::addtogit shared examples'
+      end
+
+      context 'with configured passphrase' do
+        let(:title) { 'mytitle' }
+        let :params do
+          {
+            passphrase: 'secret',
+            reponame: 'test',
+          }
+        end
+
+        it_behaves_like 'borgbackup::addtogit shared examples'
+      end
     end
-
-    it_behaves_like 'borgbackup::addtogit shared examples'
-  end
-
-  context 'with configured passphrase' do
-    let(:title) { 'mytitle' }
-    let :params do
-      {
-        passphrase: 'secret',
-        reponame: 'test',
-      }
-    end
-
-    it_behaves_like 'borgbackup::addtogit shared examples'
   end
 end
