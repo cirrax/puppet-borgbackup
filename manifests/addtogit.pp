@@ -35,7 +35,9 @@ define borgbackup::addtogit (
   if $passphrase == 'random' {
     # just create the file if it does non exist, or we cannot decrypt it
     exec { "create passphrase file ${title}":
+      # lint:ignore:140chars
       command => "cat /dev/random |tr -dc _A-Z-a-z-0-9 | head -c30 | gpg --encrypt --always-trust ${keys} > ${git_home}/${::fqdn}/${reponame}_pass.gpg",
+      # lint:endignore
       require => [Exec["create gpg private key for ${::fqdn}"], File["${git_home}/${::fqdn}"]],
       before  => Exec["initialize borg repo ${reponame}"],
       unless  => [
@@ -63,6 +65,7 @@ define borgbackup::addtogit (
   # on the host to backup
   $md5_keys=md5(sprintf("%s\n",downcase($borgbackup::git::gpg_keys.keys()).sort().join("\n")))
 
+  # lint:ignore:140chars
   exec { "reencrypt passphrase file ${title}":
     command => "gpg --decrypt ${git_home}/${::fqdn}/${reponame}_pass.gpg | gpg --encrypt --always-trust ${keys} > ${git_home}/${::fqdn}/${reponame}_pass.gpg",
     require => Exec["create passphrase file ${title}"],
@@ -90,5 +93,6 @@ define borgbackup::addtogit (
       "gpg --decrypt -v --output /dev/null ${git_home}/${::fqdn}/${reponame}_pass.gpg 2>&1 |sed -n 's/^ .*<\\(.*\\)>\"$/\\L\\1/p'|sort|md5sum|grep -e '^${md5_keys}'",
     ],
   }
+  # lint:endignore
 }
 

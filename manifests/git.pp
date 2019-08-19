@@ -41,7 +41,7 @@ class borgbackup::git (
   String $gitrepo        = '',
   String $gitrepo_sshkey = '',
   String $git_home       = "${borgbackup::configdir}/git",
-  String $git_author     = 'borgbackup <root@${::fqdn}>',
+  String $git_author     = 'borgbackup <root@${::fqdn}>',  # lint:ignore:single_quote_string_with_variables
 ) inherits borgbackup {
 
   Package[$packages] -> Exec["create gpg private key for ${::fqdn}"]
