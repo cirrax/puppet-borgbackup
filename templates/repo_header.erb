@@ -8,6 +8,10 @@ export BORG_REPO=<%= @target %>
 # get the backup host, if there is none we expect ''
 BACKUP_HOST=`echo $BORG_REPO|sed -e 's/^.*\@\(.*\)\:.*$/\1/;tx;d;:x'`
 
+<% @env_vars.each do | key, val| -%>
+export <%= key %>='<%= val %>'
+<% end -%>
+
 # check if backup host is reachable, if not return an icinga/nagios compatible warning (exit 1)
 if [ "$BACKUP_HOST" != '' ]; then
   ssh  -o PasswordAuthentication=no -o PubkeyAuthentication=no -o ConnectTimeout=5  $BACKUP_HOST  2>&1 |grep 'Permission denied' > /dev/null
@@ -29,10 +33,6 @@ if [ `borgbackup --version |awk -F' ' '{print $2 " 1.0.9"}'|tr ' ' "\n"|sort -V|
 else
   export BORG_PASSCOMMAND='<%= @_passcommand -%>'
 fi
-<% end -%>
-
-<% @env_vars.each do | key, val| -%>
-export <%= key %>='<%= val %>'
 <% end -%>
 
 # to initialize the repo

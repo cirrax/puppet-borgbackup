@@ -21,7 +21,7 @@
 #     passcommand to extract the key from the gitrepo.
 #   $env_vars
 #     additional environment variables to set
-#     before the execution of borg.
+#     before the execution of borg and other commands.
 #     defaults to {}
 #     for remote repositories, set this to:
 #     { BORG_RSH: 'ssh -i /etc/borgbackup/.ssh/YOUR_KEY' }
