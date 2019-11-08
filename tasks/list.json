@@ -1,0 +1,11 @@
+{
+  "puppet_task_version": 1,
+  "supports_noop": false,
+  "description": "lists the contents of the nodes borg repository",
+  "parameters": {
+     "reponame": {
+       "description": "The name of the repository if not set, $::fqdn is used",
+       "type": "Optional[String]"
+    }
+  }
+}

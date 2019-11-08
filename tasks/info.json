@@ -1,0 +1,11 @@
+{
+  "puppet_task_version": 1,
+  "supports_noop": false,
+  "description": "displays detailed information about the borg repo",
+  "parameters": {
+     "reponame": {
+       "description": "The name of the repository if not set, $::fqdn is used",
+       "type": "Optional[String]"
+    }
+  }
+}

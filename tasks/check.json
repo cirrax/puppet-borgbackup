@@ -1,0 +1,11 @@
+{
+  "puppet_task_version": 1,
+  "supports_noop": false,
+  "description": "verifies the consistency of a borg repository and the corresponding archives",
+  "parameters": {
+     "reponame": {
+       "description": "The name of the repository if not set, $::fqdn is used",
+       "type": "Optional[String]"
+    }
+  }
+}
