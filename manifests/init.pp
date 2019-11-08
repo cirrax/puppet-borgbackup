@@ -66,13 +66,7 @@ class borgbackup (
     create_resources($ssh_key_define, $ssh_key_res)
   }
 
-  $_repos_defaults = merge(
-    $repos_defaults,
-    {
-      archives => $archives,
-      target   => $default_target,
-    }
-  )
+  $_repos_defaults = $repos_defaults + { 'archives' => $archives, 'target' => $default_target, }
 
   create_resources('::borgbackup::repo', $repos, $_repos_defaults)
 }
