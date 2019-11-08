@@ -7,3 +7,5 @@ lookup_options:
       merge: 'hash'
    borgbackup::archives:
       merge: 'hash'
+   borgbackup::repos_defaults:
+      merge: 'hash'

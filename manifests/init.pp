@@ -26,6 +26,7 @@
 #  $repos_defaults
 #    default values for the $repos to create.
 #    defaults to {}
+#    Hint: hiera5 will hash merge this parameter.
 #  $archives
 #    archives to add to $repos
 #    hiera5 will hash merge this parameter.
