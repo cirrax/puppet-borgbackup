@@ -5,7 +5,5 @@ lookup_options:
    # merge repos
    borgbackup::repos:
       merge: 'hash'
-   # merge archives
-   borgbackup::repo::archives:
+   borgbackup::archives:
       merge: 'hash'
-

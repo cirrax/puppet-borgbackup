@@ -37,7 +37,6 @@
 #     Hash of archives to create for this repo
 #     See ::borgbackup::archive for options
 #     $reponame is added as default.
-#     Hint: hiera5 will hash merge this parameter.
 #   $icinga_old
 #     you can run a rudimentary icinga/nagios check
 #     to see if a repo is old. this parameter

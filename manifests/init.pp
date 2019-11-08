@@ -26,6 +26,11 @@
 #  $repos_defaults
 #    default values for the $repos to create.
 #    defaults to {}
+#  $archives
+#    archives to add to $repos
+#    hiera5 will hash merge this parameter.
+#    Remark: these archives will bee added to all repos defined in
+#    $repo. But can be overwriten per repo using $repo parameter.
 #
 class borgbackup (
   String  $configdir            = '/etc/borgbackup',
@@ -35,6 +40,7 @@ class borgbackup (
   Hash    $repos                = {$::fqdn => {}},
   String  $default_target       = '',
   Hash    $repos_defaults       = {},
+  Hash    $archives             = {},
 ) {
 
   include ::borgbackup::install
@@ -63,7 +69,8 @@ class borgbackup (
   $_repos_defaults = merge(
     $repos_defaults,
     {
-      target => $default_target,
+      archives => $archives,
+      target   => $default_target,
     }
   )
 
