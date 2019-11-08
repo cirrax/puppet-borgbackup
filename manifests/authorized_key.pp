@@ -5,51 +5,50 @@
 # for borgbackup dokumentation see:
 #   http://borgbackup.readthedocs.io/en/stable/usage/serve.html
 #
-# Parameters:
-#   $backuproot
-#     the directory where all the backups should be
-#   $target
-#     the target authorized_keys file
-#   $command
-#     the command to restrict to
-#     defaults to 'borg serve'
-#   $reponame
-#     the name of the repo, defaults to $title
-#   $keys
-#     the ssh public keys to grant access with this configuration
-#     defaults to []
-#   $restrict_to_path
-#     restrict repository access to PATH. 
-#     Access to all sub-directories is granted implicitly;
-#     can be set to:
-#     '' or no: option not used
-#     'yes': set to ${backuproot}/${reponame}
-#     or any path to set.
-#     defaults to 'no'
-#   $restrict_to_repository
-#     restrict repository access. Only the repository located at 
-#     PATH (no sub-directories are considered) is accessible.
-#     can be set to:
-#     '' or no: option not used
-#     'yes': set to ${backuproot}/${reponame}
-#     or any path to set.
-#     defaults to 'yes'
-#   $append_only
-#     only allow appending to repository segment files
-#     Defaults to false
-#   $storage_quota
-#     Override storage quota of the repository (e.g. 5G, 1.5T).
-#     When a new repository is initialized, sets the storage quota 
-#     on the new repository as well. Default: no quota.
-#   $restricts
-#     ssh restrictions to set. 
-#     defaults to ['restrict'] this needs openssh-server > 7.2
-#     if openssh-server < 7.2 use:
-#     ['no-port-forwarding','no-X11-forwarding','no-pty',
-#      'no-agent-forwarding','no-user-rc']
-#   $env_vars
-#     Hash of environment variables to set  
-#     defaults to {}
+# @param backuproot
+#   the directory where all the backups should be
+# @param target
+#   the target authorized_keys file
+# @param command
+#   the command to restrict to
+#   defaults to 'borg serve'
+# @param reponame
+#   the name of the repo, defaults to $title
+# @param keys
+#   the ssh public keys to grant access with this configuration
+#   defaults to []
+# @param restrict_to_path
+#   restrict repository access to PATH. 
+#   Access to all sub-directories is granted implicitly;
+#   can be set to:
+#   '' or no: option not used
+#   'yes': set to ${backuproot}/${reponame}
+#   or any path to set.
+#   defaults to 'no'
+# @param restrict_to_repository
+#   restrict repository access. Only the repository located at 
+#   PATH (no sub-directories are considered) is accessible.
+#   can be set to:
+#   '' or no: option not used
+#   'yes': set to ${backuproot}/${reponame}
+#   or any path to set.
+#   defaults to 'yes'
+# @param append_only
+#   only allow appending to repository segment files
+#   Defaults to false
+# @param storage_quota
+#   Override storage quota of the repository (e.g. 5G, 1.5T).
+#   When a new repository is initialized, sets the storage quota 
+#   on the new repository as well. Default: no quota.
+# @param restricts
+#   ssh restrictions to set. 
+#   defaults to ['restrict'] this needs openssh-server > 7.2
+#   if openssh-server < 7.2 use:
+#   ['no-port-forwarding','no-X11-forwarding','no-pty',
+#    'no-agent-forwarding','no-user-rc']
+# @param env_vars
+#   Hash of environment variables to set  
+#   defaults to {}
 #
 define borgbackup::authorized_key (
   String  $backuproot,

@@ -2,31 +2,35 @@
 # this class is used to setup a remote borg server
 # (the target) where to put the backups
 # 
-# Parameters:
-#  $backuproot
-#    directory for the backups.
-#    defaults to '/srv/borgbackup'
-#  $borguser
-#    the user to create for the remote borg 'agents'
-#    to login via ssh
-#    defaults to 'borgbackup'
-#  $borggroup
-#    the group of the borguser
-#    defaults to 'borgbackup'
-#  $user_ensure
-#    if true (default) the $borguser is created
-#  $authorized_keys_define   = '',
-#    resource to create the authorized-keys file
-#    defaults to 'borgbackup::authorized_key'
-#    if you do not want to manage the authorized-keys file
-#    set this to ''
-#  $authorized_keys         = {},
-#    Hash of keys to add to authorized-keys file
-#    defaults to {}
-#  $authorized_keys_defaults = {},
-#    Hash of default parameters to generate the 
-#    authorized-keys file
-#    defaults to {}
+# @param backuproot
+#   directory for the backups.
+#   defaults to '/srv/borgbackup'
+# @param borguser
+#   the user to create for the remote borg 'agents'
+#   to login via ssh
+#   defaults to 'borgbackup'
+# @param borggroup
+#   the group of the borguser
+#   defaults to 'borgbackup'
+# @param borghome
+#   where the borgs live ;)
+#   the homedirectory of the borg user
+# @param user_ensure
+#   if true (default) the $borguser is created
+# @param authorized_keys_target
+#   target for authorized_keys
+# @param authorized_keys_define
+#   resource to create the authorized-keys file
+#   defaults to 'borgbackup::authorized_key'
+#   if you do not want to manage the authorized-keys file
+#   set this to ''
+# @param authorized_keys
+#   Hash of keys to add to authorized-keys file
+#   defaults to {}
+# @param authorized_keys_defaults
+#   Hash of default parameters to generate the 
+#   authorized-keys file
+#   defaults to {}
 #
 class borgbackup::server(
   String  $backuproot               = '/srv/borgbackup',

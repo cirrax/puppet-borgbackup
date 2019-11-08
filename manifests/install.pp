@@ -1,15 +1,16 @@
 #
+# internal class borgbackup::install
 #
 # @summary
 # internal class borgbackup::install
 # to install the packages
 # (used by ::borgbackup::server and ::borgbackup)
 #
-# @params packages:
-#    packages to install
-#    defaults to ['borgbackup']
-# @params package_ensure
-#    defaults to 'installed'
+# @param packages
+#   packages to install
+#   defaults to ['borgbackup']
+# @param package_ensure
+#   defaults to 'installed'
 #
 class borgbackup::install (
   Array  $packages       = ['borgbackup'],

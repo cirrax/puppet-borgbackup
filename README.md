@@ -5,7 +5,6 @@
 [![Puppet Forge](https://img.shields.io/puppetforge/dt/cirrax/borgbackup.svg?style=flat-square)](https://forge.puppet.com/cirrax/borgbackup)
 [![Puppet Forge](https://img.shields.io/puppetforge/e/cirrax/borgbackup.svg?style=flat-square)](https://forge.puppet.com/cirrax/borgbackup)
 [![Puppet Forge](https://img.shields.io/puppetforge/f/cirrax/borgbackup.svg?style=flat-square)](https://forge.puppet.com/cirrax/borgbackup)
-[![puppetmodule.info docs](http://www.puppetmodule.info/images/badge.png)](http://www.puppetmodule.info/github/cirrax/puppet-borgbackup)
 
 
 #### Table of Contents
@@ -102,20 +101,8 @@ the nodes, then the ID-of-user is probably wrong.
 
 ## Reference
 
-All classes and defines are documented with all parameters in the corresponding code file.
-
-### classes
-* [::borgbackup](http://www.puppetmodule.info/github/cirrax/puppet-borgbackup/master/puppet_classes/borgbackup)
-* [::borgbackup::git](http://www.puppetmodule.info/github/cirrax/puppet-borgbackup/master/puppet_classes/borgbackup_3A_3Agit)
-* [::borgbackup::install](http://www.puppetmodule.info/github/cirrax/puppet-borgbackup/master/puppet_classes/borgbackup_3A_3Ainstall)
-* [::borgbackup::server](http://www.puppetmodule.info/github/cirrax/puppet-borgbackup/master/puppet_classes/borgbackup_3A_3Aserver)
-
-
-### defined typed
-* [::borgbackup::addtogit](http://www.puppetmodule.info/github/cirrax/puppet-borgbackup/master/puppet_defined_types/borgbackup_3A_3Aaddtogit)
-* [::borgbackup::archive](http://www.puppetmodule.info/github/cirrax/puppet-borgbackup/master/puppet_defined_types/borgbackup_3A_3Aarchive)
-* [::borgbackup::authorized_key](http://www.puppetmodule.info/github/cirrax/puppet-borgbackup/master/puppet_defined_types/borgbackup_3A_3Aauthorized_key)
-* [::borgbackup::repo](http://www.puppetmodule.info/github/cirrax/puppet-borgbackup/master/puppet_defined_types/borgbackup_3A_3Arepo)
+All classes and defines are documented with all parameters in the corresponding code file and
+in the REFERENCE document.
 
 ## Contributing
 

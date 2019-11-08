@@ -1,11 +1,10 @@
 # internal define to add a repo to git.
 # 
-# Parameters:
-#  $passphrase:
-#    passphrase to set.
-#    if set to 'random', a random passphrase is generated
-#  $reponame:
-#    the name of the repository
+# @param passphrase
+#   passphrase to set.
+#   if set to 'random', a random passphrase is generated
+# @param reponame
+#   the name of the repository
 define borgbackup::addtogit (
   String $passphrase,
   String $reponame,

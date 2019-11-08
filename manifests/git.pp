@@ -2,37 +2,36 @@
 # Internal class to setup the git repository to
 # store passphrase and key
 #
-# Parameters:
-#  $packages
-#    the packages to ensure
-#    defautls to ['git','gnupg']
-#  $gpg_keys
-#    Hash of gpg public keys to use for the encryption of 
-#    password and keyfile.
-#    the key for a pgp key must match the first email mentioned in
-#    the key. otherwise it will reencrypt with each puppet run!
-#    defaults to {}
-#  $gpg_home
-#    gpg directory to store pgp keys.
-#    defaults to "${borgbackup::configdir}/.gnupg"
-#  $gitrepo
-#    if set to a remote url, an existing git repo will be cloned and
-#    commits will be pushed there. This gives the oportunity to have
-#    a separate place to store the access keys to the backups.
-#    defaults to '' which only creates a local git repo.
-#    Remark: if you change this, you have localy adapt the 
-#    git repo (or delete it).
-#  $gitrepo_sshkey
-#    ssh private key needed to access the gitrepo.
-#    defaults to ''
-#    if $gitrepo is set to '' this value is ignored.
-#  $git_home
-#    directory to clone or create the git repo for
-#    keys and passphrases.
-#    defaults to "${borgbackup::configdir}/git"
-#  $git_author
-#    String to be used as git author for commits.
-#    defaults to 'borgbackup <root@${::fqdn}>'
+# @param packages
+#   the packages to ensure
+#   defautls to ['git','gnupg']
+# @param gpg_keys
+#   Hash of gpg public keys to use for the encryption of 
+#   password and keyfile.
+#   the key for a pgp key must match the first email mentioned in
+#   the key. otherwise it will reencrypt with each puppet run!
+#   defaults to {}
+# @param gpg_home
+#   gpg directory to store pgp keys.
+#   defaults to "${borgbackup::configdir}/.gnupg"
+# @param gitrepo
+#   if set to a remote url, an existing git repo will be cloned and
+#   commits will be pushed there. This gives the oportunity to have
+#   a separate place to store the access keys to the backups.
+#   defaults to '' which only creates a local git repo.
+#   Remark: if you change this, you have localy adapt the 
+#   git repo (or delete it).
+# @param gitrepo_sshkey
+#   ssh private key needed to access the gitrepo.
+#   defaults to ''
+#   if $gitrepo is set to '' this value is ignored.
+# @param git_home
+#   directory to clone or create the git repo for
+#   keys and passphrases.
+#   defaults to "${borgbackup::configdir}/git"
+# @param git_author
+#   String to be used as git author for commits.
+#   defaults to 'borgbackup <root@${::fqdn}>'
 # 
 class borgbackup::git (
   Array  $packages       = ['git','gnupg'],

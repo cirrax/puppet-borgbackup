@@ -1,73 +1,69 @@
 #
 # This class initializes a backup run
 #
-# use borgbackup::archive define to add archives to
-# this repo
-#
-# Parameters:
-#   $reponame
-#     the name of the repo
-#     Defaults to $title
-#   $target
-#     the target where to put the backup (env BORG_REPO)
-#   $passphrase
-#     the passphrase to use for the repo
-#     if empty (the default, random pasphrase is generated
-#     and saved gpg encrypted in a git repo. see
-#     borgbackup::git for more information.
-#   $passcommand
-#     a command to get the password of the repo
-#     defaults to 'default' which creates a
-#     passcommand to extract the key from the gitrepo.
-#   $env_vars
-#     additional environment variables to set
-#     before the execution of borg and other commands.
-#     defaults to {}
-#     for remote repositories, set this to:
-#     { BORG_RSH: 'ssh -i /etc/borgbackup/.ssh/YOUR_KEY' }
-#   $encryption
-#     the encryption for the backup.
-#     defaults to 'keyfile'
-#   $append_only
-#     if true, an append_only repo is created (no purge)
-#     defaults to false
-#   $storage_quota
-#     storage quota to set defaults to ''
-#   $archives
-#     Hash of archives to create for this repo
-#     See ::borgbackup::archive for options
-#     $reponame is added as default.
-#   $icinga_old
-#     you can run a rudimentary icinga/nagios check
-#     to see if a repo is old. this parameter
-#     after how many seconds a repo is considered old
-#     defaults to 90000 (25h)
-#   $crontab_define
-#     resource used to create a crontab entry
-#     defaults to 'cron'
-#     set this to a resource to create systemd timers
-#     if you prefer systemd timers
-#     if set to '' no cron job will be generated
-#   $crontabs
-#     parameters for $crontab_define
-#     defaults to {}
-#     which if crontab_define is 'cron' (the default)
-#     creates a nightly cronjob for doing backup with:
-#     cron { "borgbackup run ${reponame}":
-#       command => "${configdir}/repo_${reponame}.sh run",
-#       user    => 'root',
-#       hour    => fqdn_rand(3,'borgbackup'),
-#       minute  => fqdn_rand(60,'borgbackup'),
-#     }
-#   $check_host
-#     if set to an ip address or a hostname, then a function
-#     checks if this host is reachable by opening a socket to
-#     port 22 (ssh). If this fails, the sope of this define
-#     is set to noop.
-#     Set checkhost equal to your remote backuphost to avoid
-#     a fail of your regular puppetruns if the backuphost is
-#     not reachable.
-#     defaults to '' means do not check.
+# @param reponame
+#   the name of the repo
+#   Defaults to $title
+# @param target
+#   the target where to put the backup (env BORG_REPO)
+# @param passphrase
+#   the passphrase to use for the repo
+#   if empty (the default, random pasphrase is generated
+#   and saved gpg encrypted in a git repo. see
+#   borgbackup::git for more information.
+# @param passcommand
+#   a command to get the password of the repo
+#   defaults to 'default' which creates a
+#   passcommand to extract the key from the gitrepo.
+# @param env_vars
+#   additional environment variables to set
+#   before the execution of borg and other commands.
+#   defaults to {}
+#   for remote repositories, set this to:
+#   { BORG_RSH: 'ssh -i /etc/borgbackup/.ssh/YOUR_KEY' }
+# @param encryption
+#   the encryption for the backup.
+#   defaults to 'keyfile'
+# @param append_only
+#   if true, an append_only repo is created (no purge)
+#   defaults to false
+# @param storage_quota
+#   storage quota to set defaults to ''
+# @param archives
+#   Hash of archives to create for this repo
+#   See ::borgbackup::archive for options
+#   $reponame is added as default.
+# @param icinga_old
+#   you can run a rudimentary icinga/nagios check
+#   to see if a repo is old. this parameter
+#   after how many seconds a repo is considered old
+#   defaults to 90000 (25h)
+# @param crontab_define
+#   resource used to create a crontab entry
+#   defaults to 'cron'
+#   set this to a resource to create systemd timers
+#   if you prefer systemd timers
+#   if set to '' no cron job will be generated
+# @param crontabs
+#   parameters for $crontab_define
+#   defaults to {}
+#   which if crontab_define is 'cron' (the default)
+#   creates a nightly cronjob for doing backup with:
+#   cron { "borgbackup run ${reponame}":
+#     command => "${configdir}/repo_${reponame}.sh run",
+#     user    => 'root',
+#     hour    => fqdn_rand(3,'borgbackup'),
+#     minute  => fqdn_rand(60,'borgbackup'),
+#   }
+# @param check_host
+#   if set to an ip address or a hostname, then a function
+#   checks if this host is reachable by opening a socket to
+#   port 22 (ssh). If this fails, the sope of this define
+#   is set to noop.
+#   Set checkhost equal to your remote backuphost to avoid
+#   a fail of your regular puppetruns if the backuphost is
+#   not reachable.
+#   defaults to '' means do not check.
 #
 define borgbackup::repo (
   String  $reponame       = $title,

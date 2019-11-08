@@ -1,73 +1,71 @@
 #
 # This class creates an archive in a repo
 # 
-# Parameters:
-#
-# $reponame,
+# @param reponame
 #   The name of the repo to add the archive
 #   defaults to $::fqdn, the default repo created
 #   by including borgbackup without parameters
-# $archive_name
+# @param archive_name
 #   The name of the archive.
 #   Defaults to $title
-# $pre_commands
+# @param pre_commands
 #   Array of commands to run before the backup run
 #   Defaults to []
-# $post_commands
+# @param post_commands
 #   Array of commands to run after the backup run
 #   Defaults to []
-# $create_compression
+# @param create_compression
 #   the compression to use for create. 
 #   Set to '' if no compresseion should be applied.
 #   Defaults to 'lz4'
-# $create_filter
+# @param create_filter
 #   Filter items to display for create commnd. 
 #   Set to '' if no filter should be applied.
 #   Defaults to 'AME' (show Added, Modified and Error files)
-# $create_options
+# @param create_options
 #   Array of additional options to add to the create command.
 #   Each item will be prefixed with '--' (means use long name !)
 #   Defaults to ['verbose', 'list', 'stats', 'show-rc', 'exclude-caches']
-# $create_excludes
+# @param create_excludes
 #   Array of excludes
 #   Defaults to []
 #   needs to be [] if stdin_cmd is used.
-# $create_includes
+# @param create_includes
 #   Array of file to include
 #   Defaults to []
 #   needs to be [] if stdin_cmd is used.
-# $stdin_cmd
+# @param stdin_cmd
 #   command which is executed, stdout is used as
 #   input to backup. defaults to ''
 #   do not use together with $create_excludes and $create_includes
-# $do_prune
+# @param do_prune
 #   if true, prune will be run after the create command.
 #   Defaults to true
-# $prune_options
+# @param prune_options
 #   Array of additional options to add to the prune command.
 #   Each item will be prefixed with '--' (means use long name !)
 #   Defaults to ['list', 'show-rc']
-# $keep_last
+# @param keep_last
 #   number of last archives to keep
 #   Set to '' if this option should not be added
 #   Defaults to ''
-# $keep_hourly
+# @param keep_hourly
 #   number of hourly archives to keep
 #   Set to '' if this option should not be added
 #   Defaults to ''
-# $keep_daily
+# @param keep_daily
 #   number of daily archives to keep
 #   Set to '' if this option should not be added
 #   Defaults to 7
-# $keep_weekly
+# @param keep_weekly
 #   number of weekly archives to keep
 #   Set to '' if this option should not be added
 #   Defaults to 4
-# $keep_monthly
+# @param keep_monthly
 #   number of monthly archives to keep
 #   Set to '' if this option should not be added
 #   Defaults to 6
-# $keep_yearly
+# @param keep_yearly
 #   number of yearly archives to keep
 #   Set to '' if this option should not be added
 #   Defaults to ''

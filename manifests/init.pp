@@ -1,37 +1,36 @@
 #
 # borg backup class
 #
-# Parameters:
-#  $configdir
-#    configuration directory
-#    defaults to '/etc/borgbackup'
-#  $ensure_ssh_directory
-#    if we true (default) we create the .ssh directory
-#  $ssh_key_define
-#    the resource to use for the generation of an ssh key
-#    defaults to ''
-#  $ssh_key_res
-#    the parameters to use for the $ssh_key_define
-#    defaults to {}
-#  $repos
-#    Hash of repos to create (also see borgbackup::repo for
-#    parameters.
-#    defautls to {$::fqdn => {}} which creates an
-#    empty repo named $::fqdn.
-#    Hint: hiera5 will hash merge this parameter.
-#  $default_target
-#    the default target of the backup for $repos definition
-#    defaults to ''
-#    see ::borgbackup::repo
-#  $repos_defaults
-#    default values for the $repos to create.
-#    defaults to {}
-#    Hint: hiera5 will hash merge this parameter.
-#  $archives
-#    archives to add to $repos
-#    hiera5 will hash merge this parameter.
-#    Remark: these archives will bee added to all repos defined in
-#    $repo. But can be overwriten per repo using $repo parameter.
+# @param configdir
+#   configuration directory
+#   defaults to '/etc/borgbackup'
+# @param ensure_ssh_directory
+#   if we true (default) we create the .ssh directory
+# @param ssh_key_define
+#   the resource to use for the generation of an ssh key
+#   defaults to ''
+# @param ssh_key_res
+#   the parameters to use for the $ssh_key_define
+#   defaults to {}
+# @param repos
+#   Hash of repos to create (also see borgbackup::repo for
+#   parameters.
+#   defautls to {$::fqdn => {}} which creates an
+#   empty repo named $::fqdn.
+#   Hint: hiera5 will hash merge this parameter.
+# @param default_target
+#   the default target of the backup for $repos definition
+#   defaults to ''
+#   see ::borgbackup::repo
+# @param repos_defaults
+#   default values for the $repos to create.
+#   defaults to {}
+#   Hint: hiera5 will hash merge this parameter.
+# @param archives
+#   archives to add to $repos
+#   hiera5 will hash merge this parameter.
+#   Remark: these archives will bee added to all repos defined in
+#   $repo. But can be overwriten per repo using $repo parameter.
 #
 class borgbackup (
   String  $configdir            = '/etc/borgbackup',

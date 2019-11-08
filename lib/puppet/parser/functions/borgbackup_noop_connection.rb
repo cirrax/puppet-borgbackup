@@ -2,6 +2,7 @@ require 'socket'
 
 # Set noop to true  for current and children scopes, if the socket on server port 22 cannot be opened.
 # This function is inspired by the trlinkin-noop module (https://forge.puppet.com/trlinkin/noop)
+#
 Puppet::Parser::Functions.newfunction(:borgbackup_noop_connection, doc: "Set noop if we cannot connect
   to a server.
   ") do |args|
