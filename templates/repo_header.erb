@@ -8,7 +8,7 @@ export BORG_REPO=<%= @target %>
 # get the backup host, if there is none we expect ''
 BACKUP_HOST=`echo $BORG_REPO|sed -e 's/^.*\@\(.*\)\:.*$/\1/;tx;d;:x'`
 
-<% @env_vars.each do | key, val| -%>
+<% @_env_vars.each do | key, val| -%>
 export <%= key %>='<%= val %>'
 <% end -%>
 

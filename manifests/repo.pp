@@ -99,9 +99,8 @@ define borgbackup::repo (
   if $passcommand == 'default' {
     include ::borgbackup::git
 
-    # lint:ignore:140chars
-    $_passcommand = "export GNUPGHOME='${::borgbackup::git::gpg_home}'; gpg --decrypt ${::borgbackup::git::git_home}/${::fqdn}/${reponame}_pass.gpg"
-    # lint:endignore
+    $_passcommand = "gpg --decrypt ${::borgbackup::git::git_home}/${::fqdn}/${reponame}_pass.gpg"
+    $_env_vars = { 'GNUPGHOME' => $borgbackup::git::gpg_home } + $env_vars
     if $passphrase == '' {
       # default behaviour, save a random passphrase encrypted in git repo
       $_passphrase = ''
@@ -120,6 +119,7 @@ define borgbackup::repo (
     }
     create_resources('::borgbackup::addtogit', $add_gitrepo)
   } else {
+    $_env_vars = $env_vars
     if ( $passphrase == '' and $passcommand == '' ) {
       fail('borgbackup::repo you cannot use an empty passphrase without passcommand')
     } else {
