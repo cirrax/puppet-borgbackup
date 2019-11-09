@@ -65,9 +65,9 @@ fi
 if [ "$CMD" = 'check_icinga' ]; then
   # check age:
   if [ "$2" = '' ]; then
-    last=`borg list |sort |tail -1|sed 's/^.*,//'`
+    last=`borg list |sort |tail -1|sed -e 's/^.*,//' -e 's/ \[.*\]$//'`
   else
-    last=`borg list --prefix "{hostname}-$2"|sort |tail -1|sed 's/^.*,//'`
+    last=`borg list --prefix "{hostname}-$2"|sort |tail -1|sed -e 's/^.*,//' -e 's/ \[.*\]$//'`
   fi
   if [ "$last" = '' ]; then
     echo "WARNING - no backup yet"
