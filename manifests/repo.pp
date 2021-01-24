@@ -78,15 +78,15 @@ define borgbackup::repo (
   Integer $icinga_old     = 90000,  # 25 hours
   String  $crontab_define = 'cron',
   Hash    $crontabs       = {},
-  String  $check_host     = '',
+  Optional[String] $check_host = undef,
 ){
 
   include ::borgbackup
 
-  if $check_host != '' {
+  if $check_host {
     # this function tries to open a tcp socket on port 22 (ssh) of server
     # if this fails, it sets the scoop to noop.
-    borgbackup_noop_connection($check_host)
+    borgbackup::noop_connection($check_host)
   }
 
   $configdir = $::borgbackup::configdir
