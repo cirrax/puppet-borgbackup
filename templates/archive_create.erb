@@ -20,12 +20,12 @@ borg create                         \
     --<%= opt -%>            \
 <% end -%>
 <% @create_excludes.each do | exclude | -%>
-    --exclude <%= exclude -%>            \
+    --exclude '<%= exclude -%>'            \
 <% end -%>
                                     \
     ::'{hostname}-<%= @archive_name %>_{now:%Y-%m-%d_%H-%M}' \
 <% @create_includes.each do | include | -%>
-    <%= include -%>            \
+    '<%= include -%>'            \
 <% end -%>
 <% if @stdin_cmd != '' -%>
 -
