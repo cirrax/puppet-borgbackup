@@ -51,17 +51,17 @@
 #   defaults to {}
 #
 define borgbackup::authorized_key (
-  String  $backuproot,
-  String  $target,
-  String  $command                = 'borg serve',
-  String  $reponame               = $title,
-  Array   $keys                   = [],
-  String  $restrict_to_path       = 'no',
-  String  $restrict_to_repository = 'yes',
-  Boolean $append_only            = false,
-  String  $storage_quota          = '',
-  Array   $restricts              = ['restrict'],
-  Hash    $env_vars               = {},
+  String              $backuproot,
+  String              $target,
+  String              $command                = 'borg serve',
+  String              $reponame               = $title,
+  Array               $keys                   = [],
+  String              $restrict_to_path       = 'no',
+  String              $restrict_to_repository = 'yes',
+  Boolean             $append_only            = false,
+  Optional[String[1]] $storage_quota          = undef,
+  Array               $restricts              = ['restrict'],
+  Hash                $env_vars               = {},
 ) {
   case $restrict_to_repository {
     'yes': {
@@ -99,10 +99,10 @@ define borgbackup::authorized_key (
     $_append_only = ''
   }
 
-  if $storage_quota == '' {
-    $_storage_quota = ''
-  } else {
+  if $storage_quota {
     $_storage_quota = " --storage-quota ${storage_quota}"
+  } else {
+    $_storage_quota = ''
   }
 
   $borg_cmd = "${command}${_restrict_to_path}${_restrict_to_repository}${_append_only}${_storage_quota}"

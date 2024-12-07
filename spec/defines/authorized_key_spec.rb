@@ -9,7 +9,6 @@ describe 'borgbackup::authorized_key' do
       restrict_to_path: '',
       restrict_to_repository: 'yes',
       append_only: false,
-      storage_quota: '',
       restricts: ['restrict'],
       env_vars: {} }
   end

@@ -10,7 +10,6 @@ describe 'borgbackup::repo' do
       archives: {},
       encryption: 'keyfile',
       append_only: false,
-      storage_quota: '',
       icinga_old: 90_000,
       crontab_define: 'cron',
       crontabs: {} }

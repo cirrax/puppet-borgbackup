@@ -41,7 +41,7 @@ if [ "$CMD" = 'init' ]; then
 <% if @apend_only -%>
          --append-only \
 <% end -%>
-<% if @storage_quota != '' -%>
+<% if @storage_quota -%>
          --storage-quota <%= @storage_quota %> \
 <% end -%>
     --encryption <%= @encryption %>

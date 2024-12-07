@@ -28,7 +28,7 @@
 #   if true, an append_only repo is created (no purge)
 #   defaults to false
 # @param storage_quota
-#   storage quota to set defaults to ''
+#   storage quota to set defaults to undef (no quota)
 # @param archives
 #   Hash of archives to create for this repo
 #   See ::borgbackup::archive for options
@@ -66,19 +66,19 @@
 #   defaults to '' means do not check.
 #
 define borgbackup::repo (
-  String           $reponame       = $title,
-  String           $target         = '',
-  Optional[String] $passphrase     = undef,
-  String           $passcommand    = 'default',
-  Hash             $env_vars       = {},
-  Hash             $archives       = {},
-  String           $encryption     = 'keyfile',
-  Boolean          $append_only    = false,
-  String           $storage_quota  = '',
-  Integer          $icinga_old     = 90000,  # 25 hours
-  String           $crontab_define = 'cron',
-  Hash             $crontabs       = {},
-  Optional[String] $check_host     = undef,
+  String              $reponame       = $title,
+  String              $target         = '',
+  Optional[String]    $passphrase     = undef,
+  String              $passcommand    = 'default',
+  Hash                $env_vars       = {},
+  Hash                $archives       = {},
+  String              $encryption     = 'keyfile',
+  Boolean             $append_only    = false,
+  Optional[String[1]] $storage_quota  = undef,
+  Integer             $icinga_old     = 90000,  # 25 hours
+  String              $crontab_define = 'cron',
+  Hash                $crontabs       = {},
+  Optional[String]    $check_host     = undef,
 ) {
   include borgbackup
 
