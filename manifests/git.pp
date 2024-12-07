@@ -18,13 +18,13 @@
 #   if set to a remote url, an existing git repo will be cloned and
 #   commits will be pushed there. This gives the oportunity to have
 #   a separate place to store the access keys to the backups.
-#   defaults to '' which only creates a local git repo.
+#   defaults to undef which only creates a local git repo.
 #   Remark: if you change this, you have localy adapt the 
 #   git repo (or delete it).
 # @param gitrepo_sshkey
 #   ssh private key needed to access the gitrepo.
-#   defaults to ''
-#   if $gitrepo is set to '' this value is ignored.
+#   defaults to undef
+#   if $gitrepo is not set this value is ignored.
 # @param git_home
 #   directory to clone or create the git repo for
 #   keys and passphrases.
@@ -38,7 +38,7 @@ class borgbackup::git (
   Hash                $gpg_keys       = {},
   String              $gpg_home       = "${borgbackup::configdir}/.gnupg",
   Optional[String[1]] $gitrepo        = undef,
-  String              $gitrepo_sshkey = '',
+  Optional[String[1]] $gitrepo_sshkey = undef,
   String              $git_home       = "${borgbackup::configdir}/git",
   String              $git_author     = 'borgbackup <root@${::fqdn}>',  # lint:ignore:single_quote_string_with_variables
 ) inherits borgbackup {
@@ -87,7 +87,7 @@ class borgbackup::git (
       owner   => 'root',
       group   => 'root',
       mode    => '0700',
-      content => $gitrepo_sshkey,
+      content => pick_default($gitrepo_sshkey,''),
     }
 
     exec { 'setup git repo':
