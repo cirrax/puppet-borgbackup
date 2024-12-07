@@ -8,7 +8,7 @@
 #   the target where to put the backup (env BORG_REPO)
 # @param passphrase
 #   the passphrase to use for the repo
-#   if empty (the default, random pasphrase is generated
+#   if empty (the default, a random pasphrase is generated
 #   and saved gpg encrypted in a git repo. see
 #   borgbackup::git for more information.
 # @param passcommand
@@ -66,19 +66,19 @@
 #   defaults to '' means do not check.
 #
 define borgbackup::repo (
-  String  $reponame       = $title,
-  String  $target         = '',
-  String  $passphrase     = '',
-  String  $passcommand    = 'default',
-  Hash    $env_vars       = {},
-  Hash    $archives       = {},
-  String  $encryption     = 'keyfile',
-  Boolean $append_only    = false,
-  String  $storage_quota  = '',
-  Integer $icinga_old     = 90000,  # 25 hours
-  String  $crontab_define = 'cron',
-  Hash    $crontabs       = {},
-  Optional[String] $check_host = undef,
+  String           $reponame       = $title,
+  String           $target         = '',
+  Optional[String] $passphrase     = undef,
+  String           $passcommand    = 'default',
+  Hash             $env_vars       = {},
+  Hash             $archives       = {},
+  String           $encryption     = 'keyfile',
+  Boolean          $append_only    = false,
+  String           $storage_quota  = '',
+  Integer          $icinga_old     = 90000,  # 25 hours
+  String           $crontab_define = 'cron',
+  Hash             $crontabs       = {},
+  Optional[String] $check_host     = undef,
 ) {
   include borgbackup
 
@@ -95,14 +95,14 @@ define borgbackup::repo (
 
     $_passcommand = "gpg --decrypt ${borgbackup::git::git_home}/${facts['networking']['fqdn']}/${reponame}_pass.gpg"
     $_env_vars = { 'GNUPGHOME' => $borgbackup::git::gpg_home } + $env_vars
-    if $passphrase == '' {
-      # default behaviour, save a random passphrase encrypted in git repo
-      $_passphrase = ''
-      $_passphrase_to_git = 'random'
-    } else {
+    if $passphrase {
       # save a configured passphrase encrypted in git repo
       $_passphrase = ''
       $_passphrase_to_git = $passphrase
+    } else {
+      # default behaviour, save a random passphrase encrypted in git repo
+      $_passphrase = ''
+      $_passphrase_to_git = 'random'
     }
     # so add to git repo ...
     $add_gitrepo = {
@@ -114,7 +114,7 @@ define borgbackup::repo (
     create_resources('::borgbackup::addtogit', $add_gitrepo)
   } else {
     $_env_vars = $env_vars
-    if ( $passphrase == '' and $passcommand == '' ) {
+    if (  ( ! $passphrase ) and $passcommand == '' ) {
       fail('borgbackup::repo you cannot use an empty passphrase without passcommand')
     } else {
       # you have either set a passphrase or a passcommand (or both) on your own, do not use git.
@@ -153,7 +153,7 @@ define borgbackup::repo (
     reponame => $reponame,
   }
 
-  create_resources('::borgbackup::archive', $archives, $archdefaults)
+  create_resources('borgbackup::archive', $archives, $archdefaults)
 
   if $crontab_define != '' {
     if $crontabs == {} and $crontab_define == 'cron' {
