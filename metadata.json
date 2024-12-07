@@ -1,6 +1,6 @@
 {
   "name": "cirrax-borgbackup",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "author": "Cirrax GmbH",
   "summary": "A module to configure borgbackup",
   "license": "GPL-3.0",
