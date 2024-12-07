@@ -1,11 +1,8 @@
 ---
 fixtures:
-  repositories:
-          "concat":
-                 repo:  "https://github.com/puppetlabs/puppetlabs-concat.git"
-          "stdlib":
-                 repo: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
-          "cron_core":
-                 repo: 'https://github.com/puppetlabs/puppetlabs-cron_core'
+  forge_modules:
+    concat: puppetlabs/concat
+    stdlib: puppetlabs/stdlib
+    cron_core: puppetlabs/cron_core
   symlinks:
-          "borgbackup": "#{source_dir}"
+    "borgbackup": "#{source_dir}"
