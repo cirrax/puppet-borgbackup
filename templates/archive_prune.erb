@@ -10,10 +10,10 @@ borg prune                          \
 <% @prune_options.each do |opt| -%>
     --<%= opt -%>            \
 <% end -%>
-<% if @keep_last != '' -%>
+<% if @keep_last -%>
     --keep-last <%= @keep_last %>  \
 <% end -%>
-<% if @keep_hourly != '' -%>
+<% if @keep_hourly -%>
     --keep-hourly <%= @keep_hourly %>  \
 <% end -%>
 <% if @keep_daily != '' -%>
@@ -25,7 +25,7 @@ borg prune                          \
 <% if @keep_monthly != '' -%>
     --keep-monthly <%= @keep_monthly %>  \
 <% end -%>
-<% if @keep_yearly != '' -%>
+<% if @keep_yearly -%>
     --keep-yearly <%= @keep_yearly %>  \
 <% end -%>
 

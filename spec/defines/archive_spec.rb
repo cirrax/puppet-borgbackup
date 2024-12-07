@@ -14,12 +14,9 @@ describe 'borgbackup::archive' do
       create_includes: [],
       do_prune: true,
       prune_options: ['list', 'show-rc'],
-      keep_last: '',
-      keep_hourly: '',
       keep_daily: 7,
       keep_weekly: 4,
-      keep_monthly: 6,
-      keep_yearly: '' }
+      keep_monthly: 6, }
   end
 
   shared_examples 'borgbackup::archive shared examples' do

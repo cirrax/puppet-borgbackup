@@ -47,12 +47,10 @@
 #   Defaults to ['list', 'show-rc']
 # @param keep_last
 #   number of last archives to keep
-#   Set to '' if this option should not be added
-#   Defaults to ''
+#   Defaults to undef
 # @param keep_hourly
 #   number of hourly archives to keep
-#   Set to '' if this option should not be added
-#   Defaults to ''
+#   Defaults to undef
 # @param keep_daily
 #   number of daily archives to keep
 #   Set to '' if this option should not be added
@@ -67,28 +65,27 @@
 #   Defaults to 6
 # @param keep_yearly
 #   number of yearly archives to keep
-#   Set to '' if this option should not be added
-#   Defaults to ''
+#   Defaults to undef (no yearly is kept)
 #
 define borgbackup::archive (
-  String                   $reponame           = $facts['networking']['fqdn'],
-  String                   $archive_name       = $title,
-  Array                    $pre_commands       = [],
-  Array                    $post_commands      = [],
-  String                   $create_compression = 'lz4',
-  String                   $create_filter      = 'AME',
-  Array                    $create_options     = ['verbose', 'list', 'stats', 'show-rc', 'exclude-caches'],
-  Array                    $create_excludes    = [],
-  Array                    $create_includes    = [],
-  Optional[String[1]]      $stdin_cmd          = undef,
-  Boolean                  $do_prune           = true,
-  Array                    $prune_options      = ['list', 'show-rc'],
-  Variant[String, Integer] $keep_last          = '',
-  Variant[String, Integer] $keep_hourly        = '',
-  Variant[String, Integer] $keep_daily         = 7,
-  Variant[String, Integer] $keep_weekly        = 4,
-  Variant[String, Integer] $keep_monthly       = 6,
-  Variant[String, Integer] $keep_yearly        = '',
+  String                                $reponame           = $facts['networking']['fqdn'],
+  String                                $archive_name       = $title,
+  Array                                 $pre_commands       = [],
+  Array                                 $post_commands      = [],
+  String                                $create_compression = 'lz4',
+  String                                $create_filter      = 'AME',
+  Array                                 $create_options     = ['verbose', 'list', 'stats', 'show-rc', 'exclude-caches'],
+  Array                                 $create_excludes    = [],
+  Array                                 $create_includes    = [],
+  Optional[String[1]]                   $stdin_cmd          = undef,
+  Boolean                               $do_prune           = true,
+  Array                                 $prune_options      = ['list', 'show-rc'],
+  Optional[Variant[String[1], Integer]] $keep_last          = undef,
+  Optional[Variant[String[1], Integer]] $keep_hourly        = undef,
+  Variant[String, Integer]              $keep_daily         = 7,
+  Variant[String, Integer]              $keep_weekly        = 4,
+  Variant[String, Integer]              $keep_monthly       = 6,
+  Optional[Variant[String[1], Integer]] $keep_yearly        = undef,
 ) {
   if ( ! $stdin_cmd and $create_includes != []) or ( ! $stdin_cmd  and $create_excludes != []) {
     fail('borgbackup::archive $stdin_cmd cannot be used together with $create_includes or $create_exclude')
