@@ -42,8 +42,7 @@ class borgbackup::git (
   String $git_home       = "${borgbackup::configdir}/git",
   String $git_author     = 'borgbackup <root@${::fqdn}>',  # lint:ignore:single_quote_string_with_variables
 ) inherits borgbackup {
-
-  Package[$packages] -> Exec["create gpg private key for ${::fqdn}"]
+  Package[$packages] -> Exec["create gpg private key for ${facts['networking']['fqdn']}"]
   Package[$packages] -> Exec['setup git repo']
 
   ensure_packages($packages)
@@ -59,21 +58,21 @@ class borgbackup::git (
     mode   => '0700',
   }
 
-  exec { "create gpg private key for ${::fqdn}":
-    environment => [ "GNUPGHOME=${gpg_home}" ],
+  exec { "create gpg private key for ${facts['networking']['fqdn']}":
+    environment => ["GNUPGHOME=${gpg_home}"],
     path        => '/usr/bin:/usr/sbin:/bin',
-    command     => "gpg --quick-generate-key --batch --passphrase '' 'borg ${::fqdn}'",
-    unless      => "gpg --list-keys 'borg ${::fqdn}'",
+    command     => "gpg --quick-generate-key --batch --passphrase '' 'borg ${facts['networking']['fqdn']}'",
+    unless      => "gpg --list-keys 'borg ${facts['networking']['fqdn']}'",
     require     => File[$gpg_home],
   }
 
   $gpg_keys.each | $name, $gpgkey | {
     exec { "add gpg key ${name}":
-      environment => [ "GNUPGHOME=${gpg_home}" ],
+      environment => ["GNUPGHOME=${gpg_home}"],
       path        => '/usr/bin:/usr/sbin:/bin',
       command     => "echo \"${gpgkey}\"| gpg --import",
       unless      => "gpg --list-keys ${name}",
-      require     => [ File[$gpg_home], Exec["create gpg private key for ${::fqdn}"] ],
+      require     => [File[$gpg_home], Exec["create gpg private key for ${facts['networking']['fqdn']}"]],
     }
   }
 
@@ -99,7 +98,7 @@ class borgbackup::git (
     }
 
     exec { 'setup git repo':
-      environment => [ "GIT_SSH_COMMAND=ssh -i ${borgbackup::configdir}/.ssh/gitrepo_key" ],
+      environment => ["GIT_SSH_COMMAND=ssh -i ${borgbackup::configdir}/.ssh/gitrepo_key"],
       path        => '/usr/bin:/usr/sbin:/bin',
       command     => "git clone ${gitrepo} ${git_home}",
       creates     => $git_home,
@@ -107,7 +106,7 @@ class borgbackup::git (
     }
 
     exec { 'pull git repo':
-      environment => [ "GIT_SSH_COMMAND=ssh -i ${borgbackup::configdir}/.ssh/gitrepo_key" ],
+      environment => ["GIT_SSH_COMMAND=ssh -i ${borgbackup::configdir}/.ssh/gitrepo_key"],
       path        => '/usr/bin:/usr/sbin:/bin',
       cwd         => $git_home,
       command     => 'git pull --rebase',
@@ -117,7 +116,7 @@ class borgbackup::git (
     }
 
     exec { 'push git repo':
-      environment => [ "GIT_SSH_COMMAND=ssh -i ${borgbackup::configdir}/.ssh/gitrepo_key" ],
+      environment => ["GIT_SSH_COMMAND=ssh -i ${borgbackup::configdir}/.ssh/gitrepo_key"],
       path        => '/usr/bin:/usr/sbin:/bin',
       cwd         => $git_home,
       command     => 'git push',
@@ -127,7 +126,7 @@ class borgbackup::git (
     }
   }
 
-  file { "${git_home}/${::fqdn}":
+  file { "${git_home}/${facts['networking']['fqdn']}":
     ensure  => 'directory',
     owner   => 'root',
     group   => 'root',
@@ -136,12 +135,11 @@ class borgbackup::git (
   }
 
   exec { 'commit git repo':
-    environment => [ "GIT_SSH_COMMAND=ssh -i ${borgbackup::configdir}/.ssh/gitrepo_key" ],
+    environment => ["GIT_SSH_COMMAND=ssh -i ${borgbackup::configdir}/.ssh/gitrepo_key"],
     path        => '/usr/bin:/usr/sbin:/bin',
     cwd         => $git_home,
-    command     => "git add .;git commit --message 'autocommit on ${::fqdn}' --author='${git_author}'",
+    command     => "git add .;git commit --message 'autocommit on ${facts['networking']['fqdn']}' --author='${git_author}'",
     refreshonly => true,
     require     => Exec['setup git repo'],
   }
-
 }

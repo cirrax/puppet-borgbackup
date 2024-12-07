@@ -71,7 +71,7 @@
 #   Defaults to ''
 #
 define borgbackup::archive (
-  String                   $reponame           = $::fqdn,
+  String                   $reponame           = $facts['networking']['fqdn'],
   String                   $archive_name       = $title,
   Array                    $pre_commands       = [],
   Array                    $post_commands      = [],
@@ -89,24 +89,23 @@ define borgbackup::archive (
   Variant[String, Integer] $keep_weekly        = 4,
   Variant[String, Integer] $keep_monthly       = 6,
   Variant[String, Integer] $keep_yearly        = '',
-){
-
+) {
   if ($stdin_cmd != '' and $create_includes != []) or ($stdin_cmd != '' and $create_excludes != []) {
     fail('borgbackup::archive $stdin_cmd cannot be used together with $create_includes or $create_exclude')
   }
 
-  include ::borgbackup
+  include borgbackup
 
-  $configdir = $::borgbackup::configdir
+  $configdir = $borgbackup::configdir
 
-  concat::fragment{ "borgbackup::archive ${reponame} create ${archive_name}":
+  concat::fragment { "borgbackup::archive ${reponame} create ${archive_name}":
     target  => "${configdir}/repo_${reponame}.sh",
     content => template('borgbackup/archive_create.erb'),
     order   => "20-${title}",
   }
 
   if $do_prune {
-    concat::fragment{ "borgbackup::archive ${reponame} prune ${archive_name}":
+    concat::fragment { "borgbackup::archive ${reponame} prune ${archive_name}":
       target  => "${configdir}/repo_${reponame}.sh",
       content => template('borgbackup/archive_prune.erb'),
       order   => "70-${title}",

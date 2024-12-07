@@ -37,13 +37,12 @@ class borgbackup (
   Boolean $ensure_ssh_directory = true,
   String  $ssh_key_define       = '',
   Hash    $ssh_key_res          = {},
-  Hash    $repos                = {$::fqdn => {}},
+  Hash    $repos                = { $facts['networking']['fqdn'] => {} },
   String  $default_target       = '',
   Hash    $repos_defaults       = {},
   Hash    $archives             = {},
 ) {
-
-  include ::borgbackup::install
+  include borgbackup::install
 
   # create a configuration directory
   file { $configdir:

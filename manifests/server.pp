@@ -32,7 +32,7 @@
 #   authorized-keys file
 #   defaults to {}
 #
-class borgbackup::server(
+class borgbackup::server (
   String  $backuproot               = '/srv/borgbackup',
   String  $borguser                  = 'borgbackup',
   String  $borggroup                = 'borgbackup',
@@ -42,10 +42,9 @@ class borgbackup::server(
   String  $authorized_keys_define   = 'borgbackup::authorized_key',
   Hash    $authorized_keys          = {},
   Hash    $authorized_keys_defaults = {},
-){
-
+) {
   if $user_ensure {
-    user{ $borguser:
+    user { $borguser:
       ensure     => present,
       comment    => 'borgbackup user',
       managehome => true,
@@ -69,7 +68,7 @@ class borgbackup::server(
         backuproot => $backuproot,
       }
     )
-    concat{ $authorized_keys_target:
+    concat { $authorized_keys_target:
       owner => $borguser,
       group => $borggroup,
       mode  => '0644',
@@ -85,5 +84,3 @@ class borgbackup::server(
     create_resources($authorized_keys_define, $authorized_keys, $_authorized_keys_defaults)
   }
 }
-
-

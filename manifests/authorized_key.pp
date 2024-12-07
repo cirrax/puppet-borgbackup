@@ -63,7 +63,6 @@ define borgbackup::authorized_key (
   Array   $restricts              = ['restrict'],
   Hash    $env_vars               = {},
 ) {
-
   case $restrict_to_repository {
     'yes': {
       $_restrict_to_repository = " --restrict-to-repository ${backuproot}/${reponame}"
@@ -108,7 +107,7 @@ define borgbackup::authorized_key (
 
   $borg_cmd = "${command}${_restrict_to_path}${_restrict_to_repository}${_append_only}${_storage_quota}"
 
-  concat::fragment{ $title:
+  concat::fragment { $title:
     target  => $target,
     content => template('borgbackup/authorized_key.erb'),
     order   => $title,

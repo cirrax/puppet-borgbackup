@@ -79,9 +79,8 @@ define borgbackup::repo (
   String  $crontab_define = 'cron',
   Hash    $crontabs       = {},
   Optional[String] $check_host = undef,
-){
-
-  include ::borgbackup
+) {
+  include borgbackup
 
   if $check_host {
     # this function tries to open a tcp socket on port 22 (ssh) of server
@@ -89,12 +88,12 @@ define borgbackup::repo (
     borgbackup::noop_connection($check_host)
   }
 
-  $configdir = $::borgbackup::configdir
+  $configdir = $borgbackup::configdir
 
   if $passcommand == 'default' {
-    include ::borgbackup::git
+    include borgbackup::git
 
-    $_passcommand = "gpg --decrypt ${::borgbackup::git::git_home}/${::fqdn}/${reponame}_pass.gpg"
+    $_passcommand = "gpg --decrypt ${borgbackup::git::git_home}/${facts['networking']['fqdn']}/${reponame}_pass.gpg"
     $_env_vars = { 'GNUPGHOME' => $borgbackup::git::gpg_home } + $env_vars
     if $passphrase == '' {
       # default behaviour, save a random passphrase encrypted in git repo
@@ -107,7 +106,7 @@ define borgbackup::repo (
     }
     # so add to git repo ...
     $add_gitrepo = {
-      "gitrepo-add-${::fqdn}-${reponame}" => {
+      "gitrepo-add-${facts['networking']['fqdn']}-${reponame}" => {
         passphrase => $_passphrase_to_git,
         reponame   => $reponame,
       },
@@ -124,7 +123,7 @@ define borgbackup::repo (
     }
   }
 
-  exec{"initialize borg repo ${reponame}":
+  exec { "initialize borg repo ${reponame}":
     command => "${configdir}/repo_${reponame}.sh init",
     unless  => "${configdir}/repo_${reponame}.sh list",
     require => Concat["${configdir}/repo_${reponame}.sh"],
@@ -138,13 +137,13 @@ define borgbackup::repo (
     mode  => '0700',
   }
 
-  concat::fragment{ "borgbackup::repo ${reponame} header":
+  concat::fragment { "borgbackup::repo ${reponame} header":
     target  => "${configdir}/repo_${reponame}.sh",
     content => template('borgbackup/repo_header.erb'),
     order   => '00-header',
   }
 
-  concat::fragment{ "borgbackup::repo ${name} footer":
+  concat::fragment { "borgbackup::repo ${name} footer":
     target  => "${configdir}/repo_${reponame}.sh",
     content => template('borgbackup/repo_footer.erb'),
     order   => '99-footer',

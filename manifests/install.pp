@@ -15,9 +15,8 @@
 class borgbackup::install (
   Array  $packages       = ['borgbackup'],
   String $package_ensure = 'installed',
-){
-
-  package{ $packages:
+) {
+  package { $packages:
     ensure => $package_ensure,
     tag    => 'borgbackup',
   }
