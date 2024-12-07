@@ -7,20 +7,20 @@
 ### Classes
 
 * [`borgbackup`](#borgbackup): borg backup class
-* [`borgbackup::git`](#borgbackupgit): Internal class to setup the git repository to store passphrase and key
-* [`borgbackup::install`](#borgbackupinstall): internal class borgbackup::install  internal class borgbackup::install to install the packages (used by ::borgbackup::server and ::borgbackup
-* [`borgbackup::server`](#borgbackupserver): this class is used to setup a remote borg server (the target) where to put the backups
+* [`borgbackup::git`](#borgbackup--git): Internal class to setup the git repository to store passphrase and key
+* [`borgbackup::install`](#borgbackup--install): internal class borgbackup::install  internal class borgbackup::install to install the packages (used by ::borgbackup::server and ::borgbackup
+* [`borgbackup::server`](#borgbackup--server): this class is used to setup a remote borg server (the target) where to put the backups
 
 ### Defined types
 
-* [`borgbackup::addtogit`](#borgbackupaddtogit): internal define to add a repo to git.
-* [`borgbackup::archive`](#borgbackuparchive): This class creates an archive in a repo
-* [`borgbackup::authorized_key`](#borgbackupauthorized_key): Internal define to handle the authorized keys from borgbackup::server  for borgbackup dokumentation see:   http://borgbackup.readthedocs.io/e
-* [`borgbackup::repo`](#borgbackuprepo): This class initializes a backup run
+* [`borgbackup::addtogit`](#borgbackup--addtogit): internal define to add a repo to git.
+* [`borgbackup::archive`](#borgbackup--archive): This class creates an archive in a repo
+* [`borgbackup::authorized_key`](#borgbackup--authorized_key): Internal define to handle the authorized keys from borgbackup::server  for borgbackup dokumentation see:   http://borgbackup.readthedocs.io/e
+* [`borgbackup::repo`](#borgbackup--repo): This class initializes a backup run
 
 ### Functions
 
-* [`borgbackup::noop_connection`](#borgbackupnoop_connection): Set noop to true  for current and children scopes, if the socket on server port 22 cannot be opened.
+* [`borgbackup::noop_connection`](#borgbackup--noop_connection): Set noop to true  for current and children scopes, if the socket on server port 22 cannot be opened.
 
 ### Tasks
 
@@ -38,16 +38,16 @@ borg backup class
 
 The following parameters are available in the `borgbackup` class:
 
-* [`configdir`](#configdir)
-* [`ensure_ssh_directory`](#ensure_ssh_directory)
-* [`ssh_key_define`](#ssh_key_define)
-* [`ssh_key_res`](#ssh_key_res)
-* [`repos`](#repos)
-* [`default_target`](#default_target)
-* [`repos_defaults`](#repos_defaults)
-* [`archives`](#archives)
+* [`configdir`](#-borgbackup--configdir)
+* [`ensure_ssh_directory`](#-borgbackup--ensure_ssh_directory)
+* [`ssh_key_define`](#-borgbackup--ssh_key_define)
+* [`ssh_key_res`](#-borgbackup--ssh_key_res)
+* [`repos`](#-borgbackup--repos)
+* [`default_target`](#-borgbackup--default_target)
+* [`repos_defaults`](#-borgbackup--repos_defaults)
+* [`archives`](#-borgbackup--archives)
 
-##### <a name="configdir"></a>`configdir`
+##### <a name="-borgbackup--configdir"></a>`configdir`
 
 Data type: `String`
 
@@ -56,24 +56,24 @@ defaults to '/etc/borgbackup'
 
 Default value: `'/etc/borgbackup'`
 
-##### <a name="ensure_ssh_directory"></a>`ensure_ssh_directory`
+##### <a name="-borgbackup--ensure_ssh_directory"></a>`ensure_ssh_directory`
 
 Data type: `Boolean`
 
 if we true (default) we create the .ssh directory
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="ssh_key_define"></a>`ssh_key_define`
+##### <a name="-borgbackup--ssh_key_define"></a>`ssh_key_define`
 
-Data type: `String`
+Data type: `Optional[String[1]]`
 
 the resource to use for the generation of an ssh key
-defaults to ''
+defaults to undef
 
-Default value: `''`
+Default value: `undef`
 
-##### <a name="ssh_key_res"></a>`ssh_key_res`
+##### <a name="-borgbackup--ssh_key_res"></a>`ssh_key_res`
 
 Data type: `Hash`
 
@@ -82,7 +82,7 @@ defaults to {}
 
 Default value: `{}`
 
-##### <a name="repos"></a>`repos`
+##### <a name="-borgbackup--repos"></a>`repos`
 
 Data type: `Hash`
 
@@ -92,19 +92,19 @@ defautls to {$::fqdn => {}} which creates an
 empty repo named $::fqdn.
 Hint: hiera5 will hash merge this parameter.
 
-Default value: `{$::fqdn => {}}`
+Default value: `{ $facts['networking']['fqdn'] => {} }`
 
-##### <a name="default_target"></a>`default_target`
+##### <a name="-borgbackup--default_target"></a>`default_target`
 
-Data type: `String`
+Data type: `Optional[String[1]]`
 
 the default target of the backup for $repos definition
-defaults to ''
+defaults to undef
 see ::borgbackup::repo
 
-Default value: `''`
+Default value: `undef`
 
-##### <a name="repos_defaults"></a>`repos_defaults`
+##### <a name="-borgbackup--repos_defaults"></a>`repos_defaults`
 
 Data type: `Hash`
 
@@ -114,7 +114,7 @@ Hint: hiera5 will hash merge this parameter.
 
 Default value: `{}`
 
-##### <a name="archives"></a>`archives`
+##### <a name="-borgbackup--archives"></a>`archives`
 
 Data type: `Hash`
 
@@ -125,7 +125,7 @@ $repo. But can be overwriten per repo using $repo parameter.
 
 Default value: `{}`
 
-### <a name="borgbackupgit"></a>`borgbackup::git`
+### <a name="borgbackup--git"></a>`borgbackup::git`
 
 Internal class to setup the git repository to
 store passphrase and key
@@ -134,15 +134,15 @@ store passphrase and key
 
 The following parameters are available in the `borgbackup::git` class:
 
-* [`packages`](#packages)
-* [`gpg_keys`](#gpg_keys)
-* [`gpg_home`](#gpg_home)
-* [`gitrepo`](#gitrepo)
-* [`gitrepo_sshkey`](#gitrepo_sshkey)
-* [`git_home`](#git_home)
-* [`git_author`](#git_author)
+* [`packages`](#-borgbackup--git--packages)
+* [`gpg_keys`](#-borgbackup--git--gpg_keys)
+* [`gpg_home`](#-borgbackup--git--gpg_home)
+* [`gitrepo`](#-borgbackup--git--gitrepo)
+* [`gitrepo_sshkey`](#-borgbackup--git--gitrepo_sshkey)
+* [`git_home`](#-borgbackup--git--git_home)
+* [`git_author`](#-borgbackup--git--git_author)
 
-##### <a name="packages"></a>`packages`
+##### <a name="-borgbackup--git--packages"></a>`packages`
 
 Data type: `Array`
 
@@ -151,7 +151,7 @@ defautls to ['git','gnupg']
 
 Default value: `['git','gnupg']`
 
-##### <a name="gpg_keys"></a>`gpg_keys`
+##### <a name="-borgbackup--git--gpg_keys"></a>`gpg_keys`
 
 Data type: `Hash`
 
@@ -163,7 +163,7 @@ defaults to {}
 
 Default value: `{}`
 
-##### <a name="gpg_home"></a>`gpg_home`
+##### <a name="-borgbackup--git--gpg_home"></a>`gpg_home`
 
 Data type: `String`
 
@@ -172,30 +172,30 @@ defaults to "${borgbackup::configdir}/.gnupg"
 
 Default value: `"${borgbackup::configdir}/.gnupg"`
 
-##### <a name="gitrepo"></a>`gitrepo`
+##### <a name="-borgbackup--git--gitrepo"></a>`gitrepo`
 
-Data type: `String`
+Data type: `Optional[String[1]]`
 
 if set to a remote url, an existing git repo will be cloned and
 commits will be pushed there. This gives the oportunity to have
 a separate place to store the access keys to the backups.
-defaults to '' which only creates a local git repo.
+defaults to undef which only creates a local git repo.
 Remark: if you change this, you have localy adapt the
 git repo (or delete it).
 
-Default value: `''`
+Default value: `undef`
 
-##### <a name="gitrepo_sshkey"></a>`gitrepo_sshkey`
+##### <a name="-borgbackup--git--gitrepo_sshkey"></a>`gitrepo_sshkey`
 
-Data type: `String`
+Data type: `Optional[String[1]]`
 
 ssh private key needed to access the gitrepo.
-defaults to ''
-if $gitrepo is set to '' this value is ignored.
+defaults to undef
+if $gitrepo is not set this value is ignored.
 
-Default value: `''`
+Default value: `undef`
 
-##### <a name="git_home"></a>`git_home`
+##### <a name="-borgbackup--git--git_home"></a>`git_home`
 
 Data type: `String`
 
@@ -205,7 +205,7 @@ defaults to "${borgbackup::configdir}/git"
 
 Default value: `"${borgbackup::configdir}/git"`
 
-##### <a name="git_author"></a>`git_author`
+##### <a name="-borgbackup--git--git_author"></a>`git_author`
 
 Data type: `String`
 
@@ -214,7 +214,7 @@ defaults to 'borgbackup <root@${::fqdn}>'
 
 Default value: `'borgbackup <root@${::fqdn}>'`
 
-### <a name="borgbackupinstall"></a>`borgbackup::install`
+### <a name="borgbackup--install"></a>`borgbackup::install`
 
 internal class borgbackup::install
 
@@ -226,10 +226,10 @@ to install the packages
 
 The following parameters are available in the `borgbackup::install` class:
 
-* [`packages`](#packages)
-* [`package_ensure`](#package_ensure)
+* [`packages`](#-borgbackup--install--packages)
+* [`package_ensure`](#-borgbackup--install--package_ensure)
 
-##### <a name="packages"></a>`packages`
+##### <a name="-borgbackup--install--packages"></a>`packages`
 
 Data type: `Array`
 
@@ -238,7 +238,7 @@ defaults to ['borgbackup']
 
 Default value: `['borgbackup']`
 
-##### <a name="package_ensure"></a>`package_ensure`
+##### <a name="-borgbackup--install--package_ensure"></a>`package_ensure`
 
 Data type: `String`
 
@@ -246,7 +246,7 @@ defaults to 'installed'
 
 Default value: `'installed'`
 
-### <a name="borgbackupserver"></a>`borgbackup::server`
+### <a name="borgbackup--server"></a>`borgbackup::server`
 
 this class is used to setup a remote borg server
 (the target) where to put the backups
@@ -255,17 +255,17 @@ this class is used to setup a remote borg server
 
 The following parameters are available in the `borgbackup::server` class:
 
-* [`backuproot`](#backuproot)
-* [`borguser`](#borguser)
-* [`borggroup`](#borggroup)
-* [`borghome`](#borghome)
-* [`user_ensure`](#user_ensure)
-* [`authorized_keys_target`](#authorized_keys_target)
-* [`authorized_keys_define`](#authorized_keys_define)
-* [`authorized_keys`](#authorized_keys)
-* [`authorized_keys_defaults`](#authorized_keys_defaults)
+* [`backuproot`](#-borgbackup--server--backuproot)
+* [`borguser`](#-borgbackup--server--borguser)
+* [`borggroup`](#-borgbackup--server--borggroup)
+* [`borghome`](#-borgbackup--server--borghome)
+* [`user_ensure`](#-borgbackup--server--user_ensure)
+* [`authorized_keys_target`](#-borgbackup--server--authorized_keys_target)
+* [`authorized_keys_define`](#-borgbackup--server--authorized_keys_define)
+* [`authorized_keys`](#-borgbackup--server--authorized_keys)
+* [`authorized_keys_defaults`](#-borgbackup--server--authorized_keys_defaults)
 
-##### <a name="backuproot"></a>`backuproot`
+##### <a name="-borgbackup--server--backuproot"></a>`backuproot`
 
 Data type: `String`
 
@@ -274,7 +274,7 @@ defaults to '/srv/borgbackup'
 
 Default value: `'/srv/borgbackup'`
 
-##### <a name="borguser"></a>`borguser`
+##### <a name="-borgbackup--server--borguser"></a>`borguser`
 
 Data type: `String`
 
@@ -284,7 +284,7 @@ defaults to 'borgbackup'
 
 Default value: `'borgbackup'`
 
-##### <a name="borggroup"></a>`borggroup`
+##### <a name="-borgbackup--server--borggroup"></a>`borggroup`
 
 Data type: `String`
 
@@ -293,7 +293,7 @@ defaults to 'borgbackup'
 
 Default value: `'borgbackup'`
 
-##### <a name="borghome"></a>`borghome`
+##### <a name="-borgbackup--server--borghome"></a>`borghome`
 
 Data type: `String`
 
@@ -302,15 +302,15 @@ the homedirectory of the borg user
 
 Default value: `'/var/lib/borgbackup'`
 
-##### <a name="user_ensure"></a>`user_ensure`
+##### <a name="-borgbackup--server--user_ensure"></a>`user_ensure`
 
 Data type: `Boolean`
 
 if true (default) the $borguser is created
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="authorized_keys_target"></a>`authorized_keys_target`
+##### <a name="-borgbackup--server--authorized_keys_target"></a>`authorized_keys_target`
 
 Data type: `String`
 
@@ -318,7 +318,7 @@ target for authorized_keys
 
 Default value: `'/var/lib/borgbackup/authorized-keys'`
 
-##### <a name="authorized_keys_define"></a>`authorized_keys_define`
+##### <a name="-borgbackup--server--authorized_keys_define"></a>`authorized_keys_define`
 
 Data type: `String`
 
@@ -329,7 +329,7 @@ set this to ''
 
 Default value: `'borgbackup::authorized_key'`
 
-##### <a name="authorized_keys"></a>`authorized_keys`
+##### <a name="-borgbackup--server--authorized_keys"></a>`authorized_keys`
 
 Data type: `Hash`
 
@@ -338,7 +338,7 @@ defaults to {}
 
 Default value: `{}`
 
-##### <a name="authorized_keys_defaults"></a>`authorized_keys_defaults`
+##### <a name="-borgbackup--server--authorized_keys_defaults"></a>`authorized_keys_defaults`
 
 Data type: `Hash`
 
@@ -350,7 +350,7 @@ Default value: `{}`
 
 ## Defined types
 
-### <a name="borgbackupaddtogit"></a>`borgbackup::addtogit`
+### <a name="borgbackup--addtogit"></a>`borgbackup::addtogit`
 
 internal define to add a repo to git.
 
@@ -358,23 +358,23 @@ internal define to add a repo to git.
 
 The following parameters are available in the `borgbackup::addtogit` defined type:
 
-* [`passphrase`](#passphrase)
-* [`reponame`](#reponame)
+* [`passphrase`](#-borgbackup--addtogit--passphrase)
+* [`reponame`](#-borgbackup--addtogit--reponame)
 
-##### <a name="passphrase"></a>`passphrase`
+##### <a name="-borgbackup--addtogit--passphrase"></a>`passphrase`
 
 Data type: `String`
 
 passphrase to set.
 if set to 'random', a random passphrase is generated
 
-##### <a name="reponame"></a>`reponame`
+##### <a name="-borgbackup--addtogit--reponame"></a>`reponame`
 
 Data type: `String`
 
 the name of the repository
 
-### <a name="borgbackuparchive"></a>`borgbackup::archive`
+### <a name="borgbackup--archive"></a>`borgbackup::archive`
 
 This class creates an archive in a repo
 
@@ -382,26 +382,26 @@ This class creates an archive in a repo
 
 The following parameters are available in the `borgbackup::archive` defined type:
 
-* [`reponame`](#reponame)
-* [`archive_name`](#archive_name)
-* [`pre_commands`](#pre_commands)
-* [`post_commands`](#post_commands)
-* [`create_compression`](#create_compression)
-* [`create_filter`](#create_filter)
-* [`create_options`](#create_options)
-* [`create_excludes`](#create_excludes)
-* [`create_includes`](#create_includes)
-* [`stdin_cmd`](#stdin_cmd)
-* [`do_prune`](#do_prune)
-* [`prune_options`](#prune_options)
-* [`keep_last`](#keep_last)
-* [`keep_hourly`](#keep_hourly)
-* [`keep_daily`](#keep_daily)
-* [`keep_weekly`](#keep_weekly)
-* [`keep_monthly`](#keep_monthly)
-* [`keep_yearly`](#keep_yearly)
+* [`reponame`](#-borgbackup--archive--reponame)
+* [`archive_name`](#-borgbackup--archive--archive_name)
+* [`pre_commands`](#-borgbackup--archive--pre_commands)
+* [`post_commands`](#-borgbackup--archive--post_commands)
+* [`create_compression`](#-borgbackup--archive--create_compression)
+* [`create_filter`](#-borgbackup--archive--create_filter)
+* [`create_options`](#-borgbackup--archive--create_options)
+* [`create_excludes`](#-borgbackup--archive--create_excludes)
+* [`create_includes`](#-borgbackup--archive--create_includes)
+* [`stdin_cmd`](#-borgbackup--archive--stdin_cmd)
+* [`do_prune`](#-borgbackup--archive--do_prune)
+* [`prune_options`](#-borgbackup--archive--prune_options)
+* [`keep_last`](#-borgbackup--archive--keep_last)
+* [`keep_hourly`](#-borgbackup--archive--keep_hourly)
+* [`keep_daily`](#-borgbackup--archive--keep_daily)
+* [`keep_weekly`](#-borgbackup--archive--keep_weekly)
+* [`keep_monthly`](#-borgbackup--archive--keep_monthly)
+* [`keep_yearly`](#-borgbackup--archive--keep_yearly)
 
-##### <a name="reponame"></a>`reponame`
+##### <a name="-borgbackup--archive--reponame"></a>`reponame`
 
 Data type: `String`
 
@@ -409,9 +409,9 @@ The name of the repo to add the archive
 defaults to $::fqdn, the default repo created
 by including borgbackup without parameters
 
-Default value: `$::fqdn`
+Default value: `$facts['networking']['fqdn']`
 
-##### <a name="archive_name"></a>`archive_name`
+##### <a name="-borgbackup--archive--archive_name"></a>`archive_name`
 
 Data type: `String`
 
@@ -420,7 +420,7 @@ Defaults to $title
 
 Default value: `$title`
 
-##### <a name="pre_commands"></a>`pre_commands`
+##### <a name="-borgbackup--archive--pre_commands"></a>`pre_commands`
 
 Data type: `Array`
 
@@ -429,7 +429,7 @@ Defaults to []
 
 Default value: `[]`
 
-##### <a name="post_commands"></a>`post_commands`
+##### <a name="-borgbackup--archive--post_commands"></a>`post_commands`
 
 Data type: `Array`
 
@@ -438,7 +438,7 @@ Defaults to []
 
 Default value: `[]`
 
-##### <a name="create_compression"></a>`create_compression`
+##### <a name="-borgbackup--archive--create_compression"></a>`create_compression`
 
 Data type: `String`
 
@@ -448,7 +448,7 @@ Defaults to 'lz4'
 
 Default value: `'lz4'`
 
-##### <a name="create_filter"></a>`create_filter`
+##### <a name="-borgbackup--archive--create_filter"></a>`create_filter`
 
 Data type: `String`
 
@@ -458,7 +458,7 @@ Defaults to 'AME' (show Added, Modified and Error files)
 
 Default value: `'AME'`
 
-##### <a name="create_options"></a>`create_options`
+##### <a name="-borgbackup--archive--create_options"></a>`create_options`
 
 Data type: `Array`
 
@@ -468,7 +468,7 @@ Defaults to ['verbose', 'list', 'stats', 'show-rc', 'exclude-caches']
 
 Default value: `['verbose', 'list', 'stats', 'show-rc', 'exclude-caches']`
 
-##### <a name="create_excludes"></a>`create_excludes`
+##### <a name="-borgbackup--archive--create_excludes"></a>`create_excludes`
 
 Data type: `Array`
 
@@ -478,7 +478,7 @@ needs to be [] if stdin_cmd is used.
 
 Default value: `[]`
 
-##### <a name="create_includes"></a>`create_includes`
+##### <a name="-borgbackup--archive--create_includes"></a>`create_includes`
 
 Data type: `Array`
 
@@ -488,26 +488,26 @@ needs to be [] if stdin_cmd is used.
 
 Default value: `[]`
 
-##### <a name="stdin_cmd"></a>`stdin_cmd`
+##### <a name="-borgbackup--archive--stdin_cmd"></a>`stdin_cmd`
 
-Data type: `String`
+Data type: `Optional[String[1]]`
 
 command which is executed, stdout is used as
-input to backup. defaults to ''
+input to backup. defaults to undef
 do not use together with $create_excludes and $create_includes
 
-Default value: `''`
+Default value: `undef`
 
-##### <a name="do_prune"></a>`do_prune`
+##### <a name="-borgbackup--archive--do_prune"></a>`do_prune`
 
 Data type: `Boolean`
 
 if true, prune will be run after the create command.
 Defaults to true
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="prune_options"></a>`prune_options`
+##### <a name="-borgbackup--archive--prune_options"></a>`prune_options`
 
 Data type: `Array`
 
@@ -517,27 +517,25 @@ Defaults to ['list', 'show-rc']
 
 Default value: `['list', 'show-rc']`
 
-##### <a name="keep_last"></a>`keep_last`
+##### <a name="-borgbackup--archive--keep_last"></a>`keep_last`
 
-Data type: `Variant[String, Integer]`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 number of last archives to keep
-Set to '' if this option should not be added
-Defaults to ''
+Defaults to undef
 
-Default value: `''`
+Default value: `undef`
 
-##### <a name="keep_hourly"></a>`keep_hourly`
+##### <a name="-borgbackup--archive--keep_hourly"></a>`keep_hourly`
 
-Data type: `Variant[String, Integer]`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 number of hourly archives to keep
-Set to '' if this option should not be added
-Defaults to ''
+Defaults to undef
 
-Default value: `''`
+Default value: `undef`
 
-##### <a name="keep_daily"></a>`keep_daily`
+##### <a name="-borgbackup--archive--keep_daily"></a>`keep_daily`
 
 Data type: `Variant[String, Integer]`
 
@@ -547,7 +545,7 @@ Defaults to 7
 
 Default value: `7`
 
-##### <a name="keep_weekly"></a>`keep_weekly`
+##### <a name="-borgbackup--archive--keep_weekly"></a>`keep_weekly`
 
 Data type: `Variant[String, Integer]`
 
@@ -557,7 +555,7 @@ Defaults to 4
 
 Default value: `4`
 
-##### <a name="keep_monthly"></a>`keep_monthly`
+##### <a name="-borgbackup--archive--keep_monthly"></a>`keep_monthly`
 
 Data type: `Variant[String, Integer]`
 
@@ -567,17 +565,16 @@ Defaults to 6
 
 Default value: `6`
 
-##### <a name="keep_yearly"></a>`keep_yearly`
+##### <a name="-borgbackup--archive--keep_yearly"></a>`keep_yearly`
 
-Data type: `Variant[String, Integer]`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 number of yearly archives to keep
-Set to '' if this option should not be added
-Defaults to ''
+Defaults to undef (no yearly is kept)
 
-Default value: `''`
+Default value: `undef`
 
-### <a name="borgbackupauthorized_key"></a>`borgbackup::authorized_key`
+### <a name="borgbackup--authorized_key"></a>`borgbackup::authorized_key`
 
 Internal define to handle the authorized keys
 from borgbackup::server
@@ -589,31 +586,31 @@ for borgbackup dokumentation see:
 
 The following parameters are available in the `borgbackup::authorized_key` defined type:
 
-* [`backuproot`](#backuproot)
-* [`target`](#target)
-* [`command`](#command)
-* [`reponame`](#reponame)
-* [`keys`](#keys)
-* [`restrict_to_path`](#restrict_to_path)
-* [`restrict_to_repository`](#restrict_to_repository)
-* [`append_only`](#append_only)
-* [`storage_quota`](#storage_quota)
-* [`restricts`](#restricts)
-* [`env_vars`](#env_vars)
+* [`backuproot`](#-borgbackup--authorized_key--backuproot)
+* [`target`](#-borgbackup--authorized_key--target)
+* [`command`](#-borgbackup--authorized_key--command)
+* [`reponame`](#-borgbackup--authorized_key--reponame)
+* [`keys`](#-borgbackup--authorized_key--keys)
+* [`restrict_to_path`](#-borgbackup--authorized_key--restrict_to_path)
+* [`restrict_to_repository`](#-borgbackup--authorized_key--restrict_to_repository)
+* [`append_only`](#-borgbackup--authorized_key--append_only)
+* [`storage_quota`](#-borgbackup--authorized_key--storage_quota)
+* [`restricts`](#-borgbackup--authorized_key--restricts)
+* [`env_vars`](#-borgbackup--authorized_key--env_vars)
 
-##### <a name="backuproot"></a>`backuproot`
+##### <a name="-borgbackup--authorized_key--backuproot"></a>`backuproot`
 
 Data type: `String`
 
 the directory where all the backups should be
 
-##### <a name="target"></a>`target`
+##### <a name="-borgbackup--authorized_key--target"></a>`target`
 
 Data type: `String`
 
 the target authorized_keys file
 
-##### <a name="command"></a>`command`
+##### <a name="-borgbackup--authorized_key--command"></a>`command`
 
 Data type: `String`
 
@@ -622,7 +619,7 @@ defaults to 'borg serve'
 
 Default value: `'borg serve'`
 
-##### <a name="reponame"></a>`reponame`
+##### <a name="-borgbackup--authorized_key--reponame"></a>`reponame`
 
 Data type: `String`
 
@@ -630,7 +627,7 @@ the name of the repo, defaults to $title
 
 Default value: `$title`
 
-##### <a name="keys"></a>`keys`
+##### <a name="-borgbackup--authorized_key--keys"></a>`keys`
 
 Data type: `Array`
 
@@ -639,7 +636,7 @@ defaults to []
 
 Default value: `[]`
 
-##### <a name="restrict_to_path"></a>`restrict_to_path`
+##### <a name="-borgbackup--authorized_key--restrict_to_path"></a>`restrict_to_path`
 
 Data type: `String`
 
@@ -653,7 +650,7 @@ defaults to 'no'
 
 Default value: `'no'`
 
-##### <a name="restrict_to_repository"></a>`restrict_to_repository`
+##### <a name="-borgbackup--authorized_key--restrict_to_repository"></a>`restrict_to_repository`
 
 Data type: `String`
 
@@ -667,26 +664,26 @@ defaults to 'yes'
 
 Default value: `'yes'`
 
-##### <a name="append_only"></a>`append_only`
+##### <a name="-borgbackup--authorized_key--append_only"></a>`append_only`
 
 Data type: `Boolean`
 
 only allow appending to repository segment files
 Defaults to false
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="storage_quota"></a>`storage_quota`
+##### <a name="-borgbackup--authorized_key--storage_quota"></a>`storage_quota`
 
-Data type: `String`
+Data type: `Optional[String[1]]`
 
 Override storage quota of the repository (e.g. 5G, 1.5T).
 When a new repository is initialized, sets the storage quota
 on the new repository as well. Default: no quota.
 
-Default value: `''`
+Default value: `undef`
 
-##### <a name="restricts"></a>`restricts`
+##### <a name="-borgbackup--authorized_key--restricts"></a>`restricts`
 
 Data type: `Array`
 
@@ -698,7 +695,7 @@ if openssh-server < 7.2 use:
 
 Default value: `['restrict']`
 
-##### <a name="env_vars"></a>`env_vars`
+##### <a name="-borgbackup--authorized_key--env_vars"></a>`env_vars`
 
 Data type: `Hash`
 
@@ -707,7 +704,7 @@ defaults to {}
 
 Default value: `{}`
 
-### <a name="borgbackuprepo"></a>`borgbackup::repo`
+### <a name="borgbackup--repo"></a>`borgbackup::repo`
 
 This class initializes a backup run
 
@@ -715,21 +712,21 @@ This class initializes a backup run
 
 The following parameters are available in the `borgbackup::repo` defined type:
 
-* [`reponame`](#reponame)
-* [`target`](#target)
-* [`passphrase`](#passphrase)
-* [`passcommand`](#passcommand)
-* [`env_vars`](#env_vars)
-* [`encryption`](#encryption)
-* [`append_only`](#append_only)
-* [`storage_quota`](#storage_quota)
-* [`archives`](#archives)
-* [`icinga_old`](#icinga_old)
-* [`crontab_define`](#crontab_define)
-* [`crontabs`](#crontabs)
-* [`check_host`](#check_host)
+* [`reponame`](#-borgbackup--repo--reponame)
+* [`target`](#-borgbackup--repo--target)
+* [`passphrase`](#-borgbackup--repo--passphrase)
+* [`passcommand`](#-borgbackup--repo--passcommand)
+* [`env_vars`](#-borgbackup--repo--env_vars)
+* [`encryption`](#-borgbackup--repo--encryption)
+* [`append_only`](#-borgbackup--repo--append_only)
+* [`storage_quota`](#-borgbackup--repo--storage_quota)
+* [`archives`](#-borgbackup--repo--archives)
+* [`icinga_old`](#-borgbackup--repo--icinga_old)
+* [`crontab_define`](#-borgbackup--repo--crontab_define)
+* [`crontabs`](#-borgbackup--repo--crontabs)
+* [`check_host`](#-borgbackup--repo--check_host)
 
-##### <a name="reponame"></a>`reponame`
+##### <a name="-borgbackup--repo--reponame"></a>`reponame`
 
 Data type: `String`
 
@@ -738,26 +735,26 @@ Defaults to $title
 
 Default value: `$title`
 
-##### <a name="target"></a>`target`
+##### <a name="-borgbackup--repo--target"></a>`target`
 
 Data type: `String`
 
 the target where to put the backup (env BORG_REPO)
 
-Default value: `''`
+Default value: `' '`
 
-##### <a name="passphrase"></a>`passphrase`
+##### <a name="-borgbackup--repo--passphrase"></a>`passphrase`
 
-Data type: `String`
+Data type: `Optional[String]`
 
 the passphrase to use for the repo
-if empty (the default, random pasphrase is generated
+if empty (the default, a random pasphrase is generated
 and saved gpg encrypted in a git repo. see
 borgbackup::git for more information.
 
-Default value: `''`
+Default value: `undef`
 
-##### <a name="passcommand"></a>`passcommand`
+##### <a name="-borgbackup--repo--passcommand"></a>`passcommand`
 
 Data type: `String`
 
@@ -767,7 +764,7 @@ passcommand to extract the key from the gitrepo.
 
 Default value: `'default'`
 
-##### <a name="env_vars"></a>`env_vars`
+##### <a name="-borgbackup--repo--env_vars"></a>`env_vars`
 
 Data type: `Hash`
 
@@ -779,7 +776,7 @@ for remote repositories, set this to:
 
 Default value: `{}`
 
-##### <a name="encryption"></a>`encryption`
+##### <a name="-borgbackup--repo--encryption"></a>`encryption`
 
 Data type: `String`
 
@@ -788,24 +785,24 @@ defaults to 'keyfile'
 
 Default value: `'keyfile'`
 
-##### <a name="append_only"></a>`append_only`
+##### <a name="-borgbackup--repo--append_only"></a>`append_only`
 
 Data type: `Boolean`
 
 if true, an append_only repo is created (no purge)
 defaults to false
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="storage_quota"></a>`storage_quota`
+##### <a name="-borgbackup--repo--storage_quota"></a>`storage_quota`
 
-Data type: `String`
+Data type: `Optional[String[1]]`
 
-storage quota to set defaults to ''
+storage quota to set defaults to undef (no quota)
 
-Default value: `''`
+Default value: `undef`
 
-##### <a name="archives"></a>`archives`
+##### <a name="-borgbackup--repo--archives"></a>`archives`
 
 Data type: `Hash`
 
@@ -815,7 +812,7 @@ $reponame is added as default.
 
 Default value: `{}`
 
-##### <a name="icinga_old"></a>`icinga_old`
+##### <a name="-borgbackup--repo--icinga_old"></a>`icinga_old`
 
 Data type: `Integer`
 
@@ -826,7 +823,7 @@ defaults to 90000 (25h)
 
 Default value: `90000`
 
-##### <a name="crontab_define"></a>`crontab_define`
+##### <a name="-borgbackup--repo--crontab_define"></a>`crontab_define`
 
 Data type: `String`
 
@@ -838,7 +835,7 @@ if set to '' no cron job will be generated
 
 Default value: `'cron'`
 
-##### <a name="crontabs"></a>`crontabs`
+##### <a name="-borgbackup--repo--crontabs"></a>`crontabs`
 
 Data type: `Hash`
 
@@ -855,7 +852,7 @@ cron { "borgbackup run ${reponame}":
 
 Default value: `{}`
 
-##### <a name="check_host"></a>`check_host`
+##### <a name="-borgbackup--repo--check_host"></a>`check_host`
 
 Data type: `Optional[String]`
 
@@ -868,11 +865,11 @@ a fail of your regular puppetruns if the backuphost is
 not reachable.
 defaults to '' means do not check.
 
-Default value: ``undef``
+Default value: `undef`
 
 ## Functions
 
-### <a name="borgbackupnoop_connection"></a>`borgbackup::noop_connection`
+### <a name="borgbackup--noop_connection"></a>`borgbackup::noop_connection`
 
 Type: Ruby 4.x API
 
