@@ -34,13 +34,13 @@
 #   defaults to 'borgbackup <root@${::fqdn}>'
 # 
 class borgbackup::git (
-  Array  $packages       = ['git','gnupg'],
-  Hash   $gpg_keys       = {},
-  String $gpg_home       = "${borgbackup::configdir}/.gnupg",
-  String $gitrepo        = '',
-  String $gitrepo_sshkey = '',
-  String $git_home       = "${borgbackup::configdir}/git",
-  String $git_author     = 'borgbackup <root@${::fqdn}>',  # lint:ignore:single_quote_string_with_variables
+  Array               $packages       = ['git','gnupg'],
+  Hash                $gpg_keys       = {},
+  String              $gpg_home       = "${borgbackup::configdir}/.gnupg",
+  Optional[String[1]] $gitrepo        = undef,
+  String              $gitrepo_sshkey = '',
+  String              $git_home       = "${borgbackup::configdir}/git",
+  String              $git_author     = 'borgbackup <root@${::fqdn}>',  # lint:ignore:single_quote_string_with_variables
 ) inherits borgbackup {
   Package[$packages] -> Exec["create gpg private key for ${facts['networking']['fqdn']}"]
   Package[$packages] -> Exec['setup git repo']
@@ -81,14 +81,7 @@ class borgbackup::git (
   # setup git repo
   #
 
-  if $gitrepo == '' {
-    # since no repo url, create with git init
-    exec { 'setup git repo':
-      path    => '/usr/bin:/usr/sbin:/bin',
-      command => "git init ${git_home}",
-      creates => $git_home,
-    }
-  } else {
+  if $gitrepo {
     # we have a gitrepo url, lets clone
     file { "${borgbackup::configdir}/.ssh/gitrepo_key":
       owner   => 'root',
@@ -123,6 +116,13 @@ class borgbackup::git (
       require     => Exec['pull git repo'],
       subscribe   => Exec['commit git repo'],
       refreshonly => true,
+    }
+  } else {
+    # since no repo url, create with git init
+    exec { 'setup git repo':
+      path    => '/usr/bin:/usr/sbin:/bin',
+      command => "git init ${git_home}",
+      creates => $git_home,
     }
   }
 

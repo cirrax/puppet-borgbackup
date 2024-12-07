@@ -7,7 +7,6 @@ describe 'borgbackup::git' do
   let :default_params do
     { packages: ['git', 'gnupg'],
       gpg_keys: {},
-      gitrepo: '',
       gitrepo_sshkey: '',
       gpg_home: '/etc/borgbackup/.gnupg',
       git_home: '/etc/borgbackup/git' }
