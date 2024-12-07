@@ -27,7 +27,7 @@ borg create                         \
 <% @create_includes.each do | include | -%>
     <%= include -%>            \
 <% end -%>
-<% if ! @stdin_cmd -%>
+<% if @stdin_cmd -%>
 -
 <% end -%>
 
