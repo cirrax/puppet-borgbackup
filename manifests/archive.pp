@@ -87,7 +87,7 @@ define borgbackup::archive (
   Variant[String, Integer]              $keep_monthly       = 6,
   Optional[Variant[String[1], Integer]] $keep_yearly        = undef,
 ) {
-  if ( ! $stdin_cmd and $create_includes != []) or ( ! $stdin_cmd  and $create_excludes != []) {
+  if ( $stdin_cmd and $create_includes != []) or ( $stdin_cmd  and $create_excludes != []) {
     fail('borgbackup::archive $stdin_cmd cannot be used together with $create_includes or $create_exclude')
   }
 
