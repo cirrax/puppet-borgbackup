@@ -5,7 +5,6 @@ describe 'borgbackup' do
   let :default_params do
     { configdir: '/etc/borgbackup',
       ensure_ssh_directory: true,
-      ssh_key_define: '',
       ssh_key_res: {},
       repos_defaults: {} }
   end

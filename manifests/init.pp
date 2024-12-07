@@ -8,7 +8,7 @@
 #   if we true (default) we create the .ssh directory
 # @param ssh_key_define
 #   the resource to use for the generation of an ssh key
-#   defaults to ''
+#   defaults to undef
 # @param ssh_key_res
 #   the parameters to use for the $ssh_key_define
 #   defaults to {}
@@ -35,7 +35,7 @@
 class borgbackup (
   String              $configdir            = '/etc/borgbackup',
   Boolean             $ensure_ssh_directory = true,
-  String              $ssh_key_define       = '',
+  Optional[String[1]] $ssh_key_define       = undef,
   Hash                $ssh_key_res          = {},
   Hash                $repos                = { $facts['networking']['fqdn'] => {} },
   Optional[String[1]] $default_target       = undef,
@@ -61,7 +61,7 @@ class borgbackup (
     }
   }
 
-  if $ssh_key_define != '' {
+  if $ssh_key_define {
     create_resources($ssh_key_define, $ssh_key_res)
   }
 
