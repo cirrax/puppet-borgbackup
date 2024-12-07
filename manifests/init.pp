@@ -20,7 +20,7 @@
 #   Hint: hiera5 will hash merge this parameter.
 # @param default_target
 #   the default target of the backup for $repos definition
-#   defaults to ''
+#   defaults to undef
 #   see ::borgbackup::repo
 # @param repos_defaults
 #   default values for the $repos to create.
@@ -33,14 +33,14 @@
 #   $repo. But can be overwriten per repo using $repo parameter.
 #
 class borgbackup (
-  String  $configdir            = '/etc/borgbackup',
-  Boolean $ensure_ssh_directory = true,
-  String  $ssh_key_define       = '',
-  Hash    $ssh_key_res          = {},
-  Hash    $repos                = { $facts['networking']['fqdn'] => {} },
-  String  $default_target       = '',
-  Hash    $repos_defaults       = {},
-  Hash    $archives             = {},
+  String              $configdir            = '/etc/borgbackup',
+  Boolean             $ensure_ssh_directory = true,
+  String              $ssh_key_define       = '',
+  Hash                $ssh_key_res          = {},
+  Hash                $repos                = { $facts['networking']['fqdn'] => {} },
+  Optional[String[1]] $default_target       = undef,
+  Hash                $repos_defaults       = {},
+  Hash                $archives             = {},
 ) {
   include borgbackup::install
 
@@ -67,5 +67,5 @@ class borgbackup (
 
   $_repos_defaults = $repos_defaults + { 'archives' => $archives, 'target' => $default_target, }
 
-  create_resources('::borgbackup::repo', $repos, $_repos_defaults)
+  create_resources('borgbackup::repo', $repos, $_repos_defaults)
 }

@@ -7,7 +7,6 @@ describe 'borgbackup' do
       ensure_ssh_directory: true,
       ssh_key_define: '',
       ssh_key_res: {},
-      default_target: '',
       repos_defaults: {} }
   end
 
