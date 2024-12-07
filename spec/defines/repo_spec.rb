@@ -3,8 +3,7 @@ require 'spec_helper'
 describe 'borgbackup::repo' do
   let :default_params do
     { reponame: 'title',
-      target: '',
-      passphrase: '',
+      target: ' ',
       passcommand: 'default',
       env_vars: {},
       archives: {},

@@ -67,7 +67,7 @@
 #
 define borgbackup::repo (
   String              $reponame       = $title,
-  String              $target         = '',
+  String              $target         = ' ',
   Optional[String]    $passphrase     = undef,
   String              $passcommand    = 'default',
   Hash                $env_vars       = {},
