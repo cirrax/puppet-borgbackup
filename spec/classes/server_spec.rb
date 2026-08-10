@@ -12,7 +12,7 @@ describe 'borgbackup::server' do
       authorized_keys_target: '/var/lib/borgbackup/authorized-keys',
       authorized_keys_define: 'borgbackup::authorized_key',
       authorized_keys: {},
-      authorized_keys_defaults: {} }
+      authorized_keys_defaults: {}, }
   end
 
   shared_examples 'borgbackup::server shared examples' do
@@ -54,7 +54,7 @@ describe 'borgbackup::server' do
       context 'with non default backuproot' do
         let :params do
           default_params.merge(
-            backuproot: '/tmp/backupdir'
+            backuproot: '/tmp/backupdir',
           )
         end
 
@@ -64,7 +64,7 @@ describe 'borgbackup::server' do
       context 'with not creating user' do
         let :params do
           default_params.merge(
-            user_ensure: false
+            user_ensure: false,
           )
         end
 
@@ -76,7 +76,7 @@ describe 'borgbackup::server' do
       describe 'with authorized-keys' do
         let :params do
           default_params.merge(
-            authorized_keys: { 'firstkey' => { 'keys' => ['key'] } }
+            authorized_keys: { 'firstkey' => { 'keys' => ['key'] } },
           )
         end
 
@@ -100,7 +100,7 @@ describe 'borgbackup::server' do
         let :params do
           default_params.merge(
             authorized_keys_define: 'file',
-            authorized_keys: { '/etc/borgbackup/.ssh/authorized-keys' => { 'owner' => 'myowner', 'group' => 'mygroup' } }
+            authorized_keys: { '/etc/borgbackup/.ssh/authorized-keys' => { 'owner' => 'myowner', 'group' => 'mygroup' } },
           )
         end
 

@@ -7,7 +7,7 @@ describe 'borgbackup' do
     { configdir: '/etc/borgbackup',
       ensure_ssh_directory: true,
       ssh_key_res: {},
-      repos_defaults: {} }
+      repos_defaults: {}, }
   end
 
   shared_examples_for 'borgbackup class' do
@@ -48,7 +48,7 @@ describe 'borgbackup' do
         let :params do
           default_params.merge(
             repos: { 'default' => { 'passphrase' => 'secret' } },
-            default_target: 'irgendwo'
+            default_target: 'irgendwo',
           )
         end
 
@@ -65,7 +65,7 @@ describe 'borgbackup' do
       describe 'with non default configuration directory' do
         let :params do
           default_params.merge(
-            configdir: '/tmp/backupdir'
+            configdir: '/tmp/backupdir',
           )
         end
 
@@ -83,7 +83,7 @@ describe 'borgbackup' do
       describe 'with create .ssh directory in default location' do
         let :params do
           default_params.merge(
-            ensure_ssh_directory: false
+            ensure_ssh_directory: false,
           )
         end
 
@@ -96,7 +96,7 @@ describe 'borgbackup' do
         let :params do
           default_params.merge(
             ssh_key_define: 'file',
-            ssh_key_res: { '/etc/borgbackup/.ssh/uid' => { 'owner' => 'myowner' } }
+            ssh_key_res: { '/etc/borgbackup/.ssh/uid' => { 'owner' => 'myowner' } },
           )
         end
 

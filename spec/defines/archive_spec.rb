@@ -40,7 +40,7 @@ describe 'borgbackup::archive' do
         let :params do
           default_params.merge(
             archive_name: title,
-            reponame: 'myrepo'
+            reponame: 'myrepo',
           )
         end
 
@@ -59,7 +59,7 @@ describe 'borgbackup::archive' do
           default_params.merge(
             archive_name: title,
             reponame: 'anotherrepo',
-            do_prune: false
+            do_prune: false,
           )
         end
 

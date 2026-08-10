@@ -8,7 +8,7 @@ describe 'borgbackup::git' do
     { packages: %w[git gnupg],
       gpg_keys: {},
       gpg_home: '/etc/borgbackup/.gnupg',
-      git_home: '/etc/borgbackup/git' }
+      git_home: '/etc/borgbackup/git', }
   end
 
   shared_examples 'borgbackup::git shared examples' do
@@ -69,7 +69,7 @@ describe 'borgbackup::git' do
       context 'with remote git repo' do
         let :params do
           default_params.merge(
-            gitrepo: 'somewhere/gitrepo'
+            gitrepo: 'somewhere/gitrepo',
           )
         end
 
