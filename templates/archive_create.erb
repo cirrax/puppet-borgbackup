@@ -33,6 +33,11 @@ borg create                         \
 
 backup_exit=$?
 
+if [ ${backup_exit} -ne 0 ];
+then
+    info "Backup Create of archive '<%= @archive_name %>' finished with exit code ${backup_exit}"
+fi
+
 # commands to run post backup creation:
 <% @post_commands.each do | command | -%>
 <%= command %>
