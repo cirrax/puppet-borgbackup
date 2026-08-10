@@ -10,7 +10,7 @@ describe 'borgbackup::authorized_key' do
       restrict_to_repository: 'yes',
       append_only: false,
       restricts: ['restrict'],
-      env_vars: {} }
+      env_vars: {}, }
   end
 
   shared_examples 'borgbackup::authorized_key shared examples' do
@@ -33,7 +33,7 @@ describe 'borgbackup::authorized_key' do
           default_params.merge(
             reponame: title,
             backuproot: 'mybackuproot',
-            target: 'mytarget'
+            target: 'mytarget',
           )
         end
 
@@ -47,7 +47,7 @@ describe 'borgbackup::authorized_key' do
             reponame: title,
             backuproot: 'mybackuproot',
             target: 'mytarget',
-            keys: ['rsa mykey']
+            keys: ['rsa mykey'],
           )
         end
 

@@ -13,7 +13,7 @@ describe 'borgbackup::repo' do
       append_only: false,
       icinga_old: 90_000,
       crontab_define: 'cron',
-      crontabs: {} }
+      crontabs: {}, }
   end
 
   shared_examples 'borgbackup::repo shared examples' do
@@ -55,7 +55,7 @@ describe 'borgbackup::repo' do
         let(:title) { 'mytitle' }
         let :params do
           default_params.merge(
-            reponame: title
+            reponame: title,
           )
         end
 
@@ -73,7 +73,7 @@ describe 'borgbackup::repo' do
         let :params do
           default_params.merge(
             reponame: title,
-            archives: { 'arch' => {} }
+            archives: { 'arch' => {} },
           )
         end
 
@@ -90,7 +90,7 @@ describe 'borgbackup::repo' do
         let :params do
           default_params.merge(
             reponame: title,
-            crontab_define: ''
+            crontab_define: '',
           )
         end
 
@@ -108,7 +108,7 @@ describe 'borgbackup::repo' do
               'user'    => 'someuser',
               'hour'    => 12,
               'minute'  => 42,
-            } }
+            } },
           )
         end
 

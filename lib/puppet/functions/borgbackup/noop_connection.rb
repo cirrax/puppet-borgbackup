@@ -33,13 +33,13 @@ Puppet::Functions.create_function(:'borgbackup::noop_connection', Puppet::Functi
     end
 
     def scope.lookupdefaults(type)
-      values = super(type)
+      values = super
 
       # Create a new :noop parameter with the specified value (true/false) for our defaults hash
       noop = Puppet::Parser::Resource::Param.new(
         name: :noop,
         value: noop_value,
-        source: source
+        source: source,
       )
 
       # Adding this default fixes a corner case with resource collectors

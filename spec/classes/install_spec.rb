@@ -5,7 +5,7 @@ require 'spec_helper'
 describe 'borgbackup::install' do
   let :default_params do
     { packages: ['borgbackup'],
-      package_ensure: 'installed' }
+      package_ensure: 'installed', }
   end
 
   shared_examples 'borgbackup::install shared examples' do
@@ -34,7 +34,7 @@ describe 'borgbackup::install' do
         let :params do
           default_params.merge(
             packages: ['backup-whatever'],
-            package_ensure: 'actual'
+            package_ensure: 'actual',
           )
         end
 

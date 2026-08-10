@@ -30,3 +30,12 @@ borg prune                          \
 <% end -%>
 
 prune_exit=$?
+
+if [ ${prune_exit} -ne 0 ];
+then
+    info "Backup Prune of archive '<%= @archive_name %>' finished with exit code ${prune_exit}"
+    prune_summary="${prune_summary}\n * Archive '<%= @archive_name %>' finished with exit code ${prune_exit}"
+    if [ ${prune_exit} -gt ${global_exit} ]; then
+      global_exit=$prune_exit
+    fi
+fi
