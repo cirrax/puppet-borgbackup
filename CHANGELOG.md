@@ -1,7 +1,12 @@
 # Changelog cirrax-borgbackup
 
 
-## Version: 1.8.2 (10 August 2026)
+## Version: 1.8.3 (10 August 2026)
+* Merge branch 'dev_cirrax' ([42ec8c2](https://github.com/cirrax/puppet-borgbackup/commit/42ec8c25a8d7ceef61797e3b351c632624ee73a4))
+* replace * with -, no interpretation on echo ([2494211](https://github.com/cirrax/puppet-borgbackup/commit/24942114842216e279f4dbca0d8a54ff8cec8dac))
+
+## Version: v1.8.2 (10 August 2026)
+* Release v1.8.2 ([0bd9ca5](https://github.com/cirrax/puppet-borgbackup/commit/0bd9ca5739913c03ff9ccfaa00872158e662c328))
 * Merge pull request #10 from cirrax/dev_cirrax ([976da5d](https://github.com/cirrax/puppet-borgbackup/commit/976da5da27a74c9bb427bf4869715854db8bce93))
 * autofix rubocops ([3541c13](https://github.com/cirrax/puppet-borgbackup/commit/3541c139b05b19679946982e7c096c06316fafde))
 * fixadd summary for archive create/prune runs ([a49ada2](https://github.com/cirrax/puppet-borgbackup/commit/a49ada2843f149be0fa71f91d721dd80ccc514ce))
