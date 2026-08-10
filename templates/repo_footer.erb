@@ -2,12 +2,12 @@
 
 if [ "${backup_summary}" != '' ]; then
   info "Some backups had non zero exit codes:"
-  echo $backup_summary
+  echo "${backup_summary}"
 fi
 
 if [ "${prune_summary}" != '' ]; then
   info "Some archive prunes had non zero exit codes:"
-  echo ${prune_summary}
+  echo "${prune_summary}"
 fi
 
 exit ${global_exit}
