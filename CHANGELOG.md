@@ -1,7 +1,15 @@
 # Changelog cirrax-borgbackup
 
 
-## Version: 1.8.1 (11 August 2025)
+## Version: 1.8.2 (10 August 2026)
+* Merge pull request #10 from cirrax/dev_cirrax ([976da5d](https://github.com/cirrax/puppet-borgbackup/commit/976da5da27a74c9bb427bf4869715854db8bce93))
+* autofix rubocops ([3541c13](https://github.com/cirrax/puppet-borgbackup/commit/3541c139b05b19679946982e7c096c06316fafde))
+* fixadd summary for archive create/prune runs ([a49ada2](https://github.com/cirrax/puppet-borgbackup/commit/a49ada2843f149be0fa71f91d721dd80ccc514ce))
+* enhance exit code logging for backup prune ([e69db27](https://github.com/cirrax/puppet-borgbackup/commit/e69db272d8d7efcafd8320bdb20fa289df9664c5))
+* enhance exit code logging for backup creation ([0c91561](https://github.com/cirrax/puppet-borgbackup/commit/0c91561d644ea5cd94d55030800496732bb137a9))
+
+## Version: v1.8.1 (11 August 2025)
+* Release v1.8.1 ([821e238](https://github.com/cirrax/puppet-borgbackup/commit/821e2388c628bfaa1ceef11ddf04437af0d76657))
 * add releases ([84e9daf](https://github.com/cirrax/puppet-borgbackup/commit/84e9dafaf7c1fea7dc26bddc5e517a73eb4822c4))
 
 ## Version: v1.8.0 (11 August 2025)
