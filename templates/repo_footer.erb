@@ -1,14 +1,13 @@
 # use highest exit code as global exit code
-global_exit=$(( backup_exit > prune_exit ? backup_exit : prune_exit ))
 
-if [ ${global_exit} -eq 1 ];
-then
-    info "Backup and/or Prune finished with a warning"
+if [ "${backup_summary}" != '' ]; then
+  info "Some backups had non zero exit codes:"
+  echo $backup_summary
 fi
 
-if [ ${global_exit} -gt 1 ];
-then
-    info "Backup and/or Prune finished with an error"
+if [ "${prune_summary}" != '' ]; then
+  info "Some archive prunes had non zero exit codes:"
+  echo ${prune_summary}
 fi
 
 exit ${global_exit}
